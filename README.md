@@ -24,9 +24,9 @@ Nota: La actividad HLS se informa incorrectamente. Debe usar la salida mpegts y 
 
 ### AGRADECIMIENTOS ###
 
-Gracias a GTA por la interfaz original de xtream-ui admin
-Gracias a emre1393 por ser la sabiduría de la comunidad xui
-Gracias a amidevous por la interfaz original de xtream-ui admin
+- Gracias a GTA por la interfaz original de xtream-ui admin
+- Gracias a emre1393 por ser la sabiduría de la comunidad xui
+- Gracias a amidevous por la interfaz original de xtream-ui admin
 
 ## 🚀 Instalación de Xtream UI
 

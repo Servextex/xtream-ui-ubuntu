@@ -1,0 +1,2979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación API - Panel de Administración IPTV</title>
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #ddd;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
+            --info-color: #2196f3;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        nav {
+            margin-bottom: 30px;
+        }
+        
+        .toc {
+            background-color: var(--secondary-color);
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .toc-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 15px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+        }
+        
+        .toc a {
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        
+        .toc a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+        
+        .section-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            margin: 30px 0 15px 0;
+            border-radius: 6px;
+        }
+        
+        .endpoint {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .endpoint-header {
+            background-color: var(--secondary-color);
+            padding: 12px 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .endpoint-method {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+        
+        .method-get { background-color: #4caf50; }
+        .method-post { background-color: #2196f3; }
+        .method-put { background-color: #ff9800; }
+        .method-delete { background-color: #f44336; }
+        
+        .endpoint-path {
+            margin-left: 10px;
+            font-family: monospace;
+        }
+        
+        .endpoint-description {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .parameters, .response, .notes {
+            margin-top: 15px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--secondary-color);
+        }
+        
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        .required {
+            color: var(--error-color);
+        }
+        
+        .success-response {
+            color: var(--success-color);
+        }
+        
+        .error-response {
+            color: var(--error-color);
+        }
+        
+        .permission-note {
+            font-style: italic;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+            padding-top: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Documentación API Completa - Panel de Administración IPTV</h1>
+            <p class="subtitle">Documentación completa de los endpoints para la gestión de IPTV, usuarios y administración del sistema</p>
+        </header>
+        
+        <nav>
+            <div class="toc">
+                <div class="toc-title">Tabla de Contenidos</div>
+                <ul>
+                    <li><a href="#gestion-transmisiones">Gestión de Transmisiones</a></li>
+                    <li><a href="#gestion-usuarios">Gestión de Usuarios</a></li>
+                    <li><a href="#gestion-actividad">Gestión de Actividad de Usuarios</a></li>
+                    <li><a href="#gestion-procesos">Gestión de Procesos</a></li>
+                    <li><a href="#gestion-resellers">Gestión de Revendedores</a></li>
+                    <li><a href="#gestion-tickets">Gestión de Tickets</a></li>
+                    <li><a href="#gestion-mag">Gestión de Dispositivos MAG</a></li>
+                    <li><a href="#gestion-epg">Gestión de EPG</a></li>
+                    <li><a href="#gestion-perfiles">Gestión de Perfiles de Transcodificación</a></li>
+                    <li><a href="#gestion-series">Gestión de Series</a></li>
+                    <li><a href="#gestion-carpetas">Gestión de Carpetas</a></li>
+                    <li><a href="#bloqueo-ua">Bloqueo de User Agents</a></li>
+                    <li><a href="#bloqueo-isp">Bloqueo de ISPs</a></li>
+                    <li><a href="#bloqueo-ip">Bloqueo de IPs</a></li>
+                    <li><a href="#rtmp-ip">Gestión de IPs RTMP</a></li>
+                    <li><a href="#config-reventa">Configuración de Reventa</a></li>
+                    <li><a href="#observacion-salida">Observación de Salida</a></li>
+                    <li><a href="#gestion-enigma">Gestión de Enigma</a></li>
+                    <li><a href="#gestion-servidor">Gestión de Servidores</a></li>
+                    <li><a href="#gestion-paquetes">Gestión de Paquetes</a></li>
+                    <li><a href="#gestion-grupos">Gestión de Grupos</a></li>
+                    <li><a href="#gestion-bouquets">Gestión de Bouquets</a></li>
+                    <li><a href="#gestion-categorias">Gestión de Categorías</a></li>
+                    <li><a href="#obtener-paquete">Obtener Información de Paquete</a></li>
+                    <li><a href="#obtener-transmisiones">Obtener Transmisiones</a></li>
+                    <li><a href="#estadisticas-graficas">Estadísticas Gráficas</a></li>
+                    <li><a href="#estadisticas">Estadísticas</a></li>
+                    <li><a href="#dashboard-reventa">Dashboard de Reventa</a></li>
+                    <li><a href="#revisar-seleccion">Revisar Selección</a></li>
+                    <li><a href="#revisar-bouquet">Revisar Bouquet</a></li>
+                    <li><a href="#lista-usuarios">Lista de Usuarios</a></li>
+                    <li><a href="#lista-transmisiones">Lista de Transmisiones</a></li>
+                    <li><a href="#forzar-epg">Forzar Actualización EPG</a></li>
+                    <li><a href="#busqueda-tmdb">Búsqueda TMDB</a></li>
+                    <li><a href="#info-tmdb">Información TMDB</a></li>
+                    <li><a href="#listar-directorio">Listar Directorio</a></li>
+                    <li><a href="#huella-digital">Huella Digital</a></li>
+                    <li><a href="#reiniciar-servicios">Reiniciar Servicios</a></li>
+                    <li><a href="#mapeo-transmision">Mapeo de Transmisión</a></li>
+                    <li><a href="#limpiar-registros">Limpiar Registros</a></li>
+                    <li><a href="#copia-seguridad">Copia de Seguridad</a></li>
+                    <li><a href="#enviar-evento">Enviar Evento</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <main>
+            <!-- Gestión de Transmisiones -->
+            <section id="gestion-transmisiones">
+                <h2 class="section-header">Gestión de Transmisiones</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=stream&sub={accion}&stream_id={id}&server_id={servidor}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona operaciones en transmisiones como iniciar, detener, reiniciar y eliminar.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "stream"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "start", "stop", "restart", "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>stream_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la transmisión</td>
+                                </tr>
+                                <tr>
+                                    <td>server_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del servidor donde se encuentra la transmisión</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                            <p>Ejemplo de respuesta de error:</p>
+                            <pre><code>{
+    "result": false
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_stream"</li>
+                                <li>Las acciones "start" y "stop" controlan la transmisión del stream</li>
+                                <li>"restart" equivale a detener y volver a iniciar la transmisión</li>
+                                <li>"delete" eliminará la transmisión del sistema</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gestión de Películas -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=movie&sub={accion}&stream_id={id}&server_id={servidor}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona operaciones en películas VOD como iniciar, detener y eliminar.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "movie"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "start", "stop", "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>stream_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la película</td>
+                                </tr>
+                                <tr>
+                                    <td>server_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del servidor donde se encuentra la película</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_movie"</li>
+                                <li>La acción "delete" eliminará la película y sus archivos relacionados</li>
+                                <li>Cuando se elimina la última referencia a una película, también se elimina el archivo de película asociado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gestión de Episodios -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=episode&sub={accion}&stream_id={id}&server_id={servidor}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona operaciones en episodios de series como iniciar, detener y eliminar.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "episode"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "start", "stop", "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>stream_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del episodio</td>
+                                </tr>
+                                <tr>
+                                    <td>server_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del servidor donde se encuentra el episodio</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_episode"</li>
+                                <li>La acción "delete" eliminará el episodio, sus referencias en series_episodes y sus archivos relacionados</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Usuarios -->
+            <section id="gestion-usuarios">
+                <h2 class="section-header">Gestión de Usuarios</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=user&sub={accion}&user_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona operaciones en usuarios como eliminar, activar, desactivar, banear y desbanear.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "user"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "delete", "enable", "disable", "ban", "unban", "kill"</td>
+                                </tr>
+                                <tr>
+                                    <td>user_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del usuario</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Los revendedores solo pueden gestionar usuarios bajo su control</li>
+                                <li>Los administradores necesitan permisos "edit_user"</li>
+                                <li>"delete" elimina al usuario y todos sus dispositivos</li>
+                                <li>"enable"/"disable" activa/desactiva la cuenta del usuario</li>
+                                <li>"ban"/"unban" solo está disponible para administradores</li>
+                                <li>"kill" termina todas las conexiones activas del usuario</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Actividad de Usuarios -->
+            <section id="gestion-actividad">
+                <h2 class="section-header">Gestión de Actividad de Usuarios</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=user_activity&sub=kill&pid={pid}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Termina una conexión específica de usuario usando su ID de proceso.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "user_activity"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "kill"</td>
+                                </tr>
+                                <tr>
+                                    <td>pid</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del proceso a terminar</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Los revendedores solo pueden terminar procesos de usuarios bajo su control</li>
+                                <li>Los administradores necesitan permisos "connection_logs"</li>
+                                <li>Ejecuta "kill -9" en el proceso especificado en el servidor</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Procesos -->
+            <section id="gestion-procesos">
+                <h2 class="section-header">Gestión de Procesos</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=process&server={id_servidor}&pid={pid}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Termina un proceso específico en un servidor.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "process"</td>
+                                </tr>
+                                <tr>
+                                    <td>server</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del servidor donde se ejecuta el proceso</td>
+                                </tr>
+                                <tr>
+                                    <td>pid</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del proceso a terminar</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "process_monitor"</li>
+                                <li>Ejecuta "kill -9" en el proceso especificado en el servidor</li>
+                                <li>Este endpoint es útil para el monitoreo y gestión de procesos del sistema</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Revendedores -->
+            <section id="gestion-resellers">
+                <h2 class="section-header">Gestión de Revendedores</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=reg_user&sub={accion}&user_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona revendedores registrados, permitiendo eliminar, activar, desactivar y restablecer 2FA.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "reg_user"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "delete", "reset" (2FA), "enable", "disable"</td>
+                                </tr>
+                                <tr>
+                                    <td>user_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del revendedor</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Los revendedores solo pueden gestionar subrevendedores bajo su control</li>
+                                <li>Los administradores necesitan permisos "edit_reguser"</li>
+                                <li>La acción "delete" elimina al revendedor y devuelve los créditos a su propietario</li>
+                                <li>La acción "reset" elimina la configuración 2FA del revendedor</li>
+                                <li>"enable"/"disable" activa/desactiva la cuenta del revendedor</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Tickets -->
+            <section id="gestion-tickets">
+                <h2 class="section-header">Gestión de Tickets</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=ticket&sub={accion}&ticket_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona tickets de soporte, permitiendo eliminar, cerrar, reabrir y marcar como leído/no leído.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "ticket"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "delete", "close", "reopen", "unread", "read"</td>
+                                </tr>
+                                <tr>
+                                    <td>ticket_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del ticket</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Los revendedores solo pueden gestionar tickets relacionados con sus clientes</li>
+                                <li>Los administradores necesitan permisos "ticket"</li>
+                                <li>La acción "delete" elimina el ticket y todas sus respuestas</li>
+                                <li>Las acciones "close"/"reopen" cambian el estado del ticket</li>
+                                <li>Las acciones "read"/"unread" cambian el estado de lectura del ticket</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Dispositivos MAG -->
+            <section id="gestion-mag">
+                <h2 class="section-header">Gestión de Dispositivos MAG</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=mag&sub=delete&mag_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona dispositivos MAG, permitiendo eliminarlos del sistema.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "mag"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>mag_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del dispositivo MAG</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Los revendedores solo pueden gestionar dispositivos MAG bajo su control</li>
+                                <li>Los administradores necesitan permisos "edit_mag"</li>
+                                <li>La acción "delete" elimina el dispositivo MAG y el usuario asociado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Eventos MAG -->
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=mag_event&sub=delete&mag_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona eventos de dispositivos MAG, permitiendo eliminarlos.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "mag_event"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>mag_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del evento MAG</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "manage_events"</li>
+                                <li>La acción "delete" elimina el evento MAG especificado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de EPG -->
+            <section id="gestion-epg">
+                <h2 class="section-header">Gestión de EPG</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=epg&sub=delete&epg_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona fuentes EPG (Electronic Program Guide), permitiendo eliminarlas.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "epg"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>epg_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la fuente EPG</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_epg"</li>
+                                <li>La acción "delete" elimina la fuente EPG y su configuración asociada</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Perfiles de Transcodificación -->
+            <section id="gestion-perfiles">
+                <h2 class="section-header">Gestión de Perfiles de Transcodificación</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=profile&sub=delete&profile_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona perfiles de transcodificación, permitiendo eliminarlos.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "profile"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>profile_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del perfil de transcodificación</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "tprofiles"</li>
+                                <li>La acción "delete" elimina el perfil de transcodificación especificado</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Series -->
+            <section id="gestion-series">
+                <h2 class="section-header">Gestión de Series</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=series&sub=delete&series_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona series, permitiendo eliminarlas junto con todos sus episodios.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "series"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>series_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la serie</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_series"</li>
+                                <li>La acción "delete" elimina la serie, todos sus episodios y archivos asociados</li>
+                                <li>También se eliminan las referencias en bouquets</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Estadísticas -->
+            <section id="estadisticas">
+                <h2 class="section-header">Estadísticas del Sistema</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=stats&server_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene estadísticas detalladas del sistema o de un servidor específico.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "stats"</td>
+                                </tr>
+                                <tr>
+                                    <td>server_id</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>ID del servidor (opcional, si no se proporciona, devuelve estadísticas globales)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con estadísticas detalladas del sistema o servidor.</p>
+                            <p>Ejemplo de respuesta para un servidor:</p>
+                            <pre><code>{
+    "cpu": 25,
+    "mem": 38,
+    "uptime": "5 days, 3:45",
+    "total_running_streams": 120,
+    "bytes_sent": 2500000000,
+    "bytes_received": 1500000000,
+    "offline_streams": 5,
+    "open_connections": 350,
+    "total_connections": 1200,
+    "online_users": 180,
+    "total_users": 500,
+    "total_streams": 150,
+    "network_guaranteed_speed": 1000
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "index"</li>
+                                <li>CPU y memoria se expresan en porcentajes</li>
+                                <li>Bytes enviados/recibidos se expresan en bytes</li>
+                                <li>Cuando no se especifica server_id, la respuesta incluye un array "servers" con estadísticas de todos los servidores</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Búsqueda TMDB -->
+            <section id="busqueda-tmdb">
+                <h2 class="section-header">Búsqueda en TMDB</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=tmdb_search&type={tipo}&term={termino}&season={temporada}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Busca películas, series o temporadas en la base de datos de TMDB.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "tmdb_search"</td>
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Tipo de búsqueda: "movie", "series" o "season"</td>
+                                </tr>
+                                <tr>
+                                    <td>term</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Término de búsqueda o ID de TMDB para temporadas</td>
+                                </tr>
+                                <tr>
+                                    <td>season</td>
+                                    <td>integer</td>
+                                    <td>Condicional</td>
+                                    <td>Número de temporada (requerido si type="season")</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con los resultados de la búsqueda de TMDB.</p>
+                            <p>Ejemplo de respuesta exitosa para películas:</p>
+                            <pre><code>{
+    "result": true,
+    "data": [
+        {
+            "id": 550,
+            "title": "El Club de la Lucha",
+            "original_title": "Fight Club",
+            "release_date": "1999-10-15",
+            "poster_path": "/rr7E0NoGKxvbkb89eR1GwfoYjpA.jpg",
+            "overview": "Un empleado de oficina insomne..."
+        },
+        // Más resultados...
+    ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "add_series", "edit_series", "add_movie", "edit_movie", "add_episode" o "edit_episode"</li>
+                                <li>Utiliza la API de TMDB para obtener metadatos</li>
+                                <li>Para búsquedas de tipo "season", "term" debe ser el ID de TMDB de la serie</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Copia de Seguridad -->
+            <section id="copia-seguridad">
+                <h2 class="section-header">Gestión de Copias de Seguridad</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=backup&sub={accion}&filename={nombre}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona las copias de seguridad de la base de datos, permitiendo crear, restaurar y eliminar.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "backup"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "backup" (crear), "restore" (restaurar), "delete" (eliminar)</td>
+                                </tr>
+                                <tr>
+                                    <td>filename</td>
+                                    <td>string</td>
+                                    <td>Condicional</td>
+                                    <td>Nombre del archivo de copia de seguridad (requerido para restore y delete)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta para crear copia:</p>
+                            <pre><code>{
+    "result": true,
+    "data": {
+        "filename": "backup_2025-05-27_21-59-50.sql",
+        "timestamp": 1717033190,
+        "date": "2025-05-27 21:59:50"
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "database"</li>
+                                <li>Las copias de seguridad excluyen tablas de logs y datos EPG para reducir tamaño</li>
+                                <li>La acción "backup" crea una nueva copia de seguridad y elimina las más antiguas si se supera el límite configurado</li>
+                                <li>La acción "restore" reemplaza la base de datos actual con la copia seleccionada</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Carpetas -->
+            <section id="gestion-carpetas">
+                <h2 class="section-header">Gestión de Carpetas de Vigilancia</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=folder&sub=delete&folder_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona carpetas de vigilancia (watch folders) para importación automática de contenido.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "folder"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>folder_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la carpeta de vigilancia</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "folder_watch"</li>
+                                <li>La acción "delete" elimina la configuración de la carpeta de vigilancia</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Bloqueo de User Agents -->
+            <section id="bloqueo-ua">
+                <h2 class="section-header">Bloqueo de User Agents</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=useragent&sub=delete&ua_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona user agents bloqueados en el sistema.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "useragent"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>ua_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del user agent bloqueado</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "block_uas"</li>
+                                <li>La acción "delete" elimina la regla de bloqueo del user agent</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Bloqueo de ISPs -->
+            <section id="bloqueo-isp">
+                <h2 class="section-header">Bloqueo de ISPs</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=isp&sub=delete&isp_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona ISPs bloqueados en el sistema.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "isp"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>isp_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del ISP bloqueado</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "block_isps"</li>
+                                <li>La acción "delete" elimina la regla de bloqueo del ISP</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Bloqueo de IPs -->
+            <section id="bloqueo-ip">
+                <h2 class="section-header">Bloqueo de IPs</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=ip&sub=delete&ip={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona IPs bloqueadas en el sistema.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "ip"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>ip</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la IP bloqueada</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "block_ips"</li>
+                                <li>La acción "delete" elimina la regla de bloqueo de la IP y elimina la regla de iptables en todos los servidores</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Servidores -->
+            <section id="gestion-servidor">
+                <h2 class="section-header">Gestión de Servidores</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=server&sub={accion}&server_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona servidores de streaming, permitiendo eliminar, matar conexiones, iniciar y detener todas las transmisiones.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "server"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "delete", "kill", "start", "stop"</td>
+                                </tr>
+                                <tr>
+                                    <td>server_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del servidor</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_server"</li>
+                                <li>La acción "delete" elimina el servidor solo si puede ser eliminado (can_delete=1)</li>
+                                <li>La acción "kill" termina todas las conexiones activas en el servidor</li>
+                                <li>Las acciones "start"/"stop" inician/detienen todas las transmisiones en el servidor</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Gestión de Paquetes -->
+            <section id="gestion-paquetes">
+                <h2 class="section-header">Gestión de Paquetes</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=package&sub={accion}&package_id={id}&value={valor}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona paquetes de suscripción, permitiendo eliminar y modificar atributos.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "package"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "delete", "is_trial", "is_official", "can_gen_mag", "can_gen_e2", "only_mag", "only_e2"</td>
+                                </tr>
+                                <tr>
+                                    <td>package_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del paquete</td>
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>integer</td>
+                                    <td>Condicional</td>
+                                    <td>Valor a establecer (0 o 1) para las acciones de cambio de atributos</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_package"</li>
+                                <li>La acción "delete" elimina el paquete</li>
+                                <li>Las demás acciones modifican atributos específicos del paquete:</li>
+                                <ul>
+                                    <li>"is_trial": Define si el paquete es de prueba</li>
+                                    <li>"is_official": Define si el paquete es oficial</li>
+                                    <li>"can_gen_mag": Define si se pueden generar dispositivos MAG</li>
+                                    <li>"can_gen_e2": Define si se pueden generar dispositivos Enigma2</li>
+                                    <li>"only_mag": Define si el paquete es exclusivo para MAG</li>
+                                    <li>"only_e2": Define si el paquete es exclusivo para Enigma2</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Obtener Información de Paquete -->
+            <section id="obtener-paquete">
+                <h2 class="section-header">Obtener Información de Paquete</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=get_package&package_id={id}&user_id={id_usuario}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene información detallada sobre un paquete y sus bouquets.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_package"</td>
+                                </tr>
+                                <tr>
+                                    <td>package_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del paquete</td>
+                                </tr>
+                                <tr>
+                                    <td>user_id</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>ID del usuario (opcional, para calcular fecha de expiración)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con información detallada del paquete y sus bouquets.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true,
+    "bouquets": [
+        {
+            "id": 1,
+            "bouquet_name": "Deportes",
+            "bouquet_channels": [123, 124, 125],
+            "bouquet_series": []
+        },
+        {
+            "id": 2,
+            "bouquet_name": "Películas",
+            "bouquet_channels": [],
+            "bouquet_series": [10, 11, 12]
+        }
+    ],
+    "data": {
+        "id": 5,
+        "bouquets": "[1,2]",
+        "cost_credits": 10,
+        "official_duration": 30,
+        "official_duration_in": "days",
+        "max_connections": 1,
+        "can_gen_mag": 1,
+        "can_gen_e2": 1,
+        "only_mag": 0,
+        "only_e2": 0,
+        "exp_date": "2025-06-26"
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Si el paquete no existe, devuelve <code>{"result": false}</code></li>
+                                <li>El campo "exp_date" se calcula basado en la duración del paquete</li>
+                                <li>Si se proporciona user_id, la fecha de expiración se calcula a partir de la fecha actual del usuario</li>
+                                <li>Los costos pueden ser modificados por la configuración override_packages del revendedor</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=get_package_trial&package_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene información detallada sobre un paquete de prueba y sus bouquets.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_package_trial"</td>
+                                </tr>
+                                <tr>
+                                    <td>package_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del paquete</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con información detallada del paquete de prueba y sus bouquets.</p>
+                            <p>La estructura es similar a la respuesta de get_package, pero con datos de trial.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Grupos -->
+            <section id="gestion-grupos">
+                <h2 class="section-header">Gestión de Grupos</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=group&sub={accion}&group_id={id}&value={valor}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona grupos de miembros, permitiendo eliminar y modificar atributos.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "group"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "delete", "is_banned", "is_admin", "is_reseller"</td>
+                                </tr>
+                                <tr>
+                                    <td>group_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del grupo</td>
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>integer</td>
+                                    <td>Condicional</td>
+                                    <td>Valor a establecer (0 o 1) para las acciones de cambio de atributos</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_group"</li>
+                                <li>La acción "delete" solo elimina grupos que pueden ser eliminados (can_delete=1)</li>
+                                <li>Las demás acciones modifican atributos específicos del grupo:</li>
+                                <ul>
+                                    <li>"is_banned": Define si el grupo está prohibido</li>
+                                    <li>"is_admin": Define si el grupo tiene permisos de administrador</li>
+                                    <li>"is_reseller": Define si el grupo tiene permisos de revendedor</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Bouquets -->
+            <section id="gestion-bouquets">
+                <h2 class="section-header">Gestión de Bouquets</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=bouquet&sub=delete&bouquet_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona bouquets (agrupaciones de canales), permitiendo eliminarlos.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "bouquet"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>bouquet_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del bouquet</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_bouquet"</li>
+                                <li>La acción "delete" elimina el bouquet del sistema</li>
+                                <li>No se eliminan las transmisiones o series asociadas, solo la agrupación</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Categorías -->
+            <section id="gestion-categorias">
+                <h2 class="section-header">Gestión de Categorías</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=category&sub=delete&category_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona categorías de transmisiones, permitiendo eliminarlas.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "category"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>category_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la categoría</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_cat"</li>
+                                <li>La acción "delete" elimina la categoría</li>
+                                <li>Las transmisiones asociadas no se eliminan, pero quedarán sin categoría asignada</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Obtener Transmisiones -->
+            <section id="obtener-transmisiones">
+                <h2 class="section-header">Obtener Transmisiones</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=streams&stream_ids={json}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene información detallada sobre transmisiones específicas.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "streams"</td>
+                                </tr>
+                                <tr>
+                                    <td>stream_ids</td>
+                                    <td>JSON string</td>
+                                    <td>Sí</td>
+                                    <td>Array JSON de IDs de transmisiones</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con información detallada de las transmisiones solicitadas.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true,
+    "data": [
+        {
+            "id": 123,
+            "stream_display_name": "Canal Deportes HD",
+            "stream_source": "rtmp://example.com/live/stream1",
+            "type": 1,
+            "category_id": 5,
+            "stream_icon": "http://example.com/icon.jpg",
+            "epg_channel_id": "sports.tv",
+            "added": "2023-05-01",
+            "custom_sid": "",
+            "tv_archive": 0,
+            "direct_source": 0,
+            "tv_archive_duration": 0
+        },
+        // Más transmisiones...
+    ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "streams"</li>
+                                <li>El parámetro stream_ids debe ser un array JSON como "[123,456,789]"</li>
+                                <li>Devuelve información completa sobre cada transmisión solicitada</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard de Reventa -->
+            <section id="dashboard-reventa">
+                <h2 class="section-header">Dashboard de Reventa</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=reseller_dashboard</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene estadísticas resumidas para el dashboard de un revendedor.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "reseller_dashboard"</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con estadísticas resumidas para el revendedor.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "open_connections": 150,
+    "online_users": 45,
+    "active_accounts": 200,
+    "credits": 500
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Solo disponible para cuentas de revendedor, no para administradores</li>
+                                <li>Las estadísticas solo incluyen usuarios bajo el control del revendedor</li>
+                                <li>Los créditos son los disponibles para el revendedor</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Forzar Actualización EPG -->
+            <section id="forzar-epg">
+                <h2 class="section-header">Forzar Actualización EPG</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=force_epg</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Fuerza la actualización inmediata de los datos EPG (Electronic Program Guide).</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "force_epg"</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "epg"</li>
+                                <li>Ejecuta el script cron de EPG inmediatamente sin esperar al siguiente ciclo programado</li>
+                                <li>La actualización completa puede tardar varios minutos dependiendo de la cantidad de datos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Limpiar Registros -->
+            <section id="limpiar-registros">
+                <h2 class="section-header">Limpiar Registros</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=clear_logs&type={tipo}&from={fecha_inicio}&to={fecha_fin}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Elimina registros (logs) del sistema dentro de un rango de fechas especificado.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "clear_logs"</td>
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Tipo de registros a limpiar: "client_logs", "stream_logs", "user_activity", "credits_log", "reg_userlog", "watch_output"</td>
+                                </tr>
+                                <tr>
+                                    <td>from</td>
+                                    <td>string</td>
+                                    <td>No</td>
+                                    <td>Fecha de inicio en formato YYYY-MM-DD. Si se omite, se eliminan todos los registros hasta 'to'</td>
+                                </tr>
+                                <tr>
+                                    <td>to</td>
+                                    <td>string</td>
+                                    <td>No</td>
+                                    <td>Fecha de fin en formato YYYY-MM-DD. Si se omite, se eliminan todos los registros desde 'from'</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador específicos según el tipo de registro</li>
+                                <li>Si se omiten tanto 'from' como 'to', se eliminan todos los registros del tipo especificado</li>
+                                <li>Esta operación es irreversible, asegúrese de hacer una copia de seguridad si es necesario</li>
+                                <li>Los rangos de fechas son inclusivos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Enviar Evento MAG -->
+            <section id="enviar-evento">
+                <h2 class="section-header">Enviar Evento a Dispositivo MAG</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=send_event&data={json}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Envía eventos a dispositivos MAG como mensajes, reproducción de canales o reinicio.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "send_event"</td>
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>JSON string</td>
+                                    <td>Sí</td>
+                                    <td>Objeto JSON con la configuración del evento</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros del objeto JSON data</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del dispositivo MAG</td>
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Tipo de evento: "send_msg", "play_channel", "reboot", "reset_stb_lock"</td>
+                                </tr>
+                                <tr>
+                                    <td>message</td>
+                                    <td>string</td>
+                                    <td>Condicional</td>
+                                    <td>Mensaje a mostrar para "send_msg" o ID del canal para "play_channel"</td>
+                                </tr>
+                                <tr>
+                                    <td>reboot_portal</td>
+                                    <td>integer</td>
+                                    <td>Condicional</td>
+                                    <td>Si se debe reiniciar el portal después de "send_msg" (0 o 1)</td>
+                                </tr>
+                                <tr>
+                                    <td>need_confirm</td>
+                                    <td>integer</td>
+                                    <td>Condicional</td>
+                                    <td>Si el usuario debe confirmar el mensaje (0 o 1)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "manage_events"</li>
+                                <li>El evento se coloca en una cola y se procesa cuando el dispositivo MAG se conecta</li>
+                                <li>Ejemplo de data para enviar mensaje: <code>{"id":123,"type":"send_msg","message":"Mensaje importante","need_confirm":1,"reboot_portal":0}</code></li>
+                                <li>Ejemplo de data para reproducir canal: <code>{"id":123,"type":"play_channel","message":"456"}</code> donde 456 es el ID del canal</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Autenticación de API -->
+            <section id="autenticacion">
+                <h2 class="section-header">Autenticación de API</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-post">POST</span>
+                            <span class="endpoint-path">/admin/api.php?action=login</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Autenticación en el panel de administración para obtener acceso a la API.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "login"</td>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario del administrador o revendedor</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña de la cuenta</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con la información de sesión y token de acceso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true,
+    "auth_token": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
+    "user_info": {
+        "id": 1,
+        "username": "admin",
+        "group_id": 1,
+        "is_admin": 1,
+        "is_reseller": 0,
+        "allowed_pages": [...],
+        "allowed_actions": [...]
+    }
+}</code></pre>
+                            <p>Ejemplo de respuesta fallida:</p>
+                            <pre><code>{
+    "result": false,
+    "message": "Credenciales inválidas"
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>El token de autenticación debe incluirse en todas las solicitudes API posteriores</li>
+                                <li>Los tokens tienen un tiempo de caducidad basado en la configuración del sistema</li>
+                                <li>La información de usuario incluye permisos específicos que determinan qué endpoints puede acceder</li>
+                                <li>Se recomienda almacenar el token de forma segura y no compartirlo</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Estadísticas de Usuario -->
+            <section id="estadisticas-usuario">
+                <h2 class="section-header">Estadísticas de Usuario</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=user_statistics&user_id={id}&range={rango}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene estadísticas detalladas sobre la actividad de un usuario específico.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "user_statistics"</td>
+                                </tr>
+                                <tr>
+                                    <td>user_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>range</td>
+                                    <td>string</td>
+                                    <td>No</td>
+                                    <td>Rango de tiempo: "day", "week", "month", "year". Por defecto: "day"</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con estadísticas detalladas de uso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true,
+    "data": {
+        "connections": [
+            {"time": "2023-05-01 10:00:00", "count": 5},
+            {"time": "2023-05-01 11:00:00", "count": 8},
+            // Más datos...
+        ],
+        "total_connections": 120,
+        "unique_ips": 15,
+        "stream_categories": [
+            {"category": "Deportes", "count": 45},
+            {"category": "Películas", "count": 30},
+            // Más datos...
+        ],
+        "devices": [
+            {"type": "Android", "count": 75},
+            {"type": "iOS", "count": 30},
+            // Más datos...
+        ]
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador o ser el revendedor del usuario</li>
+                                <li>Las estadísticas incluyen patrones de uso, dispositivos preferidos y categorías más vistas</li>
+                                <li>Los datos se agregan según el rango de tiempo seleccionado</li>
+                                <li>Para rangos grandes (año), los datos pueden estar más agregados que para rangos pequeños (día)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Series -->
+            <section id="gestion-series">
+                <h2 class="section-header">Gestión de Series</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=series&sub={accion}&series_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Permite gestionar series completas, incluyendo obtener información y eliminar series.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "series"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "get_info", "delete"</td>
+                                </tr>
+                                <tr>
+                                    <td>series_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la serie</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Para "get_info":</p>
+                            <pre><code>{
+    "result": true,
+    "data": {
+        "id": 123,
+        "title": "Breaking Bad",
+        "plot": "Un profesor de química diagnosticado con cáncer...",
+        "releaseDate": "2008-01-20",
+        "cover": "http://example.com/covers/breaking_bad.jpg",
+        "genre": "Drama, Crimen",
+        "cast": "Bryan Cranston, Aaron Paul, Anna Gunn",
+        "director": "Vince Gilligan",
+        "seasons": 5,
+        "episodes": 62,
+        "tmdb_id": 1396,
+        "rating": 9.4
+    }
+}</code></pre>
+                            <p>Para "delete":</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "edit_series"</li>
+                                <li>La acción "delete" elimina la serie y todos sus episodios asociados</li>
+                                <li>"get_info" devuelve todos los detalles disponibles sobre la serie, incluyendo metadatos de TMDB si están disponibles</li>
+                                <li>Esta API gestiona series completas, para gestionar episodios individuales use el endpoint de episodios</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gestión de Dispositivos Enigma -->
+            <section id="gestion-enigma">
+                <h2 class="section-header">Gestión de Dispositivos Enigma</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=enigma&sub={accion}&device_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Gestiona dispositivos Enigma2, permitiendo borrar dispositivos o reiniciarlos.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "enigma"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "delete", "reboot"</td>
+                                </tr>
+                                <tr>
+                                    <td>device_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del dispositivo Enigma</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "manage_e2"</li>
+                                <li>La acción "delete" elimina el dispositivo de la base de datos</li>
+                                <li>La acción "reboot" envía una señal de reinicio al dispositivo si está en línea</li>
+                                <li>Para que el reinicio funcione, el dispositivo debe tener configurado correctamente el acceso remoto</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Panel de Configuración -->
+            <section id="panel-configuracion">
+                <h2 class="section-header">Panel de Configuración</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=settings&sub={accion}&key={clave}&value={valor}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Permite leer y modificar la configuración global del sistema.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "settings"</td>
+                                </tr>
+                                <tr>
+                                    <td>sub</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Acción a realizar: "get", "set"</td>
+                                </tr>
+                                <tr>
+                                    <td>key</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Clave de configuración a leer o modificar</td>
+                                </tr>
+                                <tr>
+                                    <td>value</td>
+                                    <td>string</td>
+                                    <td>Condicional</td>
+                                    <td>Valor a establecer (requerido solo para "set")</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Para "get":</p>
+                            <pre><code>{
+    "result": true,
+    "data": {
+        "key": "server_name",
+        "value": "Main Server"
+    }
+}</code></pre>
+                            <p>Para "set":</p>
+                            <pre><code>{
+    "result": true
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "settings"</li>
+                                <li>Algunas configuraciones críticas pueden requerir reiniciar ciertos servicios para aplicarse</li>
+                                <li>Claves comunes incluyen: "server_name", "allow_registrations", "message_of_day", "auto_update"</li>
+                                <li>Tenga cuidado al modificar configuraciones del sistema, ya que pueden afectar la funcionalidad global</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reiniciar Servicios -->
+            <section id="reiniciar-servicios">
+                <h2 class="section-header">Reiniciar Servicios</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/admin/api.php?action=restart_services&service={servicio}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Permite reiniciar servicios específicos del sistema o todos los servicios a la vez.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "restart_services"</td>
+                                </tr>
+                                <tr>
+                                    <td>service</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Servicio a reiniciar: "nginx", "php", "mysql", "stream", "all"</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con un campo <code>result</code> indicando éxito o fracaso.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "result": true,
+    "message": "Servicio reiniciado correctamente"
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Requiere permisos de administrador con "restart_services"</li>
+                                <li>El reinicio de servicios puede causar interrupciones temporales en el sistema</li>
+                                <li>Servicios disponibles para reiniciar:</li>
+                                <ul>
+                                    <li><strong>nginx</strong>: Reinicia el servidor web</li>
+                                    <li><strong>php</strong>: Reinicia el procesador PHP</li>
+                                    <li><strong>mysql</strong>: Reinicia el servidor de base de datos</li>
+                                    <li><strong>stream</strong>: Reinicia los servicios de streaming</li>
+                                    <li><strong>all</strong>: Reinicia todos los servicios del sistema</li>
+                                </ul>
+                                <li>El reinicio completo puede tardar varios minutos</li>
+                                <li>Es recomendable realizar esta operación en momentos de baja demanda</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <script>
+            // Script para hacer que los endpoints sean interactivos
+            document.addEventListener('DOMContentLoaded', function() {
+                // Hacer que las cabeceras de endpoint sean expandibles/contraibles
+                const headers = document.querySelectorAll('.endpoint-header');
+                
+                headers.forEach(header => {
+                    header.addEventListener('click', function() {
+                        const description = this.nextElementSibling;
+                        if (description.style.display === 'none') {
+                            description.style.display = 'block';
+                        } else {
+                            description.style.display = 'none';
+                        }
+                    });
+                });
+                
+                // Añadir indicadores visuales a las cabeceras de endpoint
+                headers.forEach(header => {
+                    const icon = document.createElement('span');
+                    icon.innerHTML = '▼';
+                    icon.style.marginLeft = '10px';
+                    icon.style.fontSize = '12px';
+                    header.querySelector('div').appendChild(icon);
+                    
+                    header.addEventListener('click', function() {
+                        const icon = this.querySelector('span:last-child');
+                        if (this.nextElementSibling.style.display === 'none') {
+                            icon.innerHTML = '▼';
+                        } else {
+                            icon.innerHTML = '▲';
+                        }
+                    });
+                });
+                
+                // Añadir enlaces a la tabla de contenidos
+                const tocLinks = document.querySelectorAll('.toc a');
+                tocLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href').substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    });
+                });
+            });
+        </script>
+        
+        <footer>
+            <p>Generado el: 27-05-2025</p>
+            <p>Versión de API: 1.0.0</p>
+        </footer>
+    </div>
+</body>
+</html>

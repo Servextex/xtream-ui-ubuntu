@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación API - Reproductor IPTV</title>
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #ddd;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
+            --info-color: #2196f3;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        nav {
+            margin-bottom: 30px;
+        }
+        
+        .toc {
+            background-color: var(--secondary-color);
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        .toc-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 15px;
+        }
+        
+        .toc li {
+            margin-bottom: 8px;
+        }
+        
+        .toc a {
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        
+        .toc a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+        
+        .section-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            margin: 30px 0 15px 0;
+            border-radius: 6px;
+        }
+        
+        .endpoint {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .endpoint-header {
+            background-color: var(--secondary-color);
+            padding: 12px 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .endpoint-method {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+        
+        .method-get { background-color: #4caf50; }
+        .method-post { background-color: #2196f3; }
+        .method-put { background-color: #ff9800; }
+        .method-delete { background-color: #f44336; }
+        
+        .endpoint-path {
+            margin-left: 10px;
+            font-family: monospace;
+        }
+        
+        .endpoint-description {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .parameters, .response, .notes {
+            margin-top: 15px;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--secondary-color);
+        }
+        
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: monospace;
+        }
+        
+        code {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        ul li {
+            margin-bottom: 5px;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Documentación API - Reproductor IPTV</h1>
+            <div class="subtitle">Referencia completa para el uso de la API del reproductor IPTV</div>
+        </header>
+        
+        <nav>
+            <div class="toc">
+                <div class="toc-title">Tabla de Contenidos</div>
+                <ul>
+                    <li><a href="#autenticacion">Autenticación</a></li>
+                    <li><a href="#canales-en-vivo">Canales en Vivo</a></li>
+                    <li><a href="#peliculas">Películas (VOD)</a></li>
+                    <li><a href="#series">Series</a></li>
+                    <li><a href="#categorias">Categorías</a></li>
+                    <li><a href="#epg">Guía de Programación (EPG)</a></li>
+                    <li><a href="#short-epg">EPG Resumido</a></li>
+                    <li><a href="#archivo-tv">Archivo TV</a></li>
+                    <li><a href="#detalles-stream">Detalles de Stream</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <main>
+            <!-- Autenticación -->
+            <section id="autenticacion">
+                <h2 class="section-header">Autenticación</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Autentica al usuario en el sistema y devuelve información básica del usuario y servidor.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con información del usuario y del servidor.</p>
+                            <p>Ejemplo de respuesta exitosa:</p>
+                            <pre><code>{
+    "user_info": {
+        "auth": 1,
+        "status": "Active",
+        "username": "example_user",
+        "password": "password123",
+        "message": "Autenticación exitosa",
+        "exp_date": "2023-12-31",
+        "is_trial": 0,
+        "active_cons": 1,
+        "created_at": "2023-01-01",
+        "max_connections": 5,
+        "allowed_output_formats": ["m3u8", "ts", "rtmp"]
+    },
+    "server_info": {
+        "url": "example.com",
+        "port": 80,
+        "https_port": 443,
+        "server_protocol": "http",
+        "rtmp_port": 1935,
+        "timezone": "America/New_York",
+        "timestamp_now": 1621234567,
+        "time_now": "2023-05-17 12:34:56"
+    }
+}</code></pre>
+                            <p>Ejemplo de respuesta fallida:</p>
+                            <pre><code>{
+    "user_info": {
+        "auth": 0,
+        "status": "Error de autenticación",
+        "username": "example_user",
+        "message": "Credenciales inválidas",
+        "exp_date": null,
+        "is_trial": 0,
+        "active_cons": 0,
+        "created_at": null,
+        "max_connections": 1,
+        "allowed_output_formats": ["m3u8", "ts", "rtmp"]
+    },
+    "server_info": {
+        "url": "",
+        "port": 80,
+        "https_port": 443,
+        "server_protocol": "http",
+        "rtmp_port": 1935,
+        "timezone": "UTC",
+        "timestamp_now": 1621234567,
+        "time_now": "2023-05-17 12:34:56"
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Esta petición es necesaria antes de usar cualquier otra funcionalidad de la API.</li>
+                                <li>El campo <code>auth</code> con valor 1 indica autenticación exitosa.</li>
+                                <li>La fecha de expiración (<code>exp_date</code>) se proporciona en formato YYYY-MM-DD.</li>
+                                <li>El campo <code>max_connections</code> indica el número máximo de dispositivos que pueden conectarse simultáneamente.</li>
+                                <li>El campo <code>active_cons</code> muestra el número actual de conexiones activas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Canales en Vivo -->
+            <section id="canales-en-vivo">
+                <h2 class="section-header">Canales en Vivo</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_live_streams</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene la lista completa de canales en vivo disponibles para el usuario.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_live_streams" o "202"</td>
+                                </tr>
+                                <tr>
+                                    <td>category_id</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>ID de categoría para filtrar canales</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con la lista de canales en vivo.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>{
+    "user_info": { ... },
+    "server_info": { ... },
+    "streams": [
+        {
+            "num": 1,
+            "name": "Canal Deportes HD",
+            "stream_type": "live",
+            "stream_id": 123,
+            "stream_icon": "http://example.com/images/sports.png",
+            "epg_channel_id": "sports.tv",
+            "added": "2023-01-15",
+            "category_id": 5,
+            "custom_sid": "",
+            "tv_archive": 1,
+            "direct_source": "http://source.example.com/stream.m3u8"
+        },
+        // Más canales...
+    ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Se puede usar <code>category_id</code> para filtrar canales de una categoría específica.</li>
+                                <li>El campo <code>tv_archive</code> indica si el canal soporta la función de grabación (1) o no (0).</li>
+                                <li>El campo <code>stream_type</code> siempre será "live" para canales en vivo.</li>
+                                <li>Para compatibilidad con versiones anteriores, la acción "202" también es válida.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Películas (VOD) -->
+            <section id="peliculas">
+                <h2 class="section-header">Películas (VOD)</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_vod_streams</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene la lista completa de películas (Video On Demand) disponibles para el usuario.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_vod_streams" o "203"</td>
+                                </tr>
+                                <tr>
+                                    <td>category_id</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>ID de categoría para filtrar películas</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con la lista de películas.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>{
+    "user_info": { ... },
+    "server_info": { ... },
+    "movies": [
+        {
+            "num": 1,
+            "name": "El Señor de los Anillos",
+            "stream_type": "movie",
+            "stream_id": 456,
+            "stream_icon": "http://example.com/images/lotr.jpg",
+            "rating": 8.8,
+            "rating_5based": 4.4,
+            "added": "2023-02-10",
+            "category_id": 10,
+            "container_extension": "mp4",
+            "custom_sid": "",
+            "direct_source": "http://source.example.com/movie.mp4"
+        },
+        // Más películas...
+    ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Se puede usar <code>category_id</code> para filtrar películas de una categoría específica.</li>
+                                <li>El campo <code>stream_type</code> siempre será "movie" para películas.</li>
+                                <li>El campo <code>rating</code> es la puntuación en escala de 10, mientras que <code>rating_5based</code> es la misma puntuación convertida a escala de 5.</li>
+                                <li>El campo <code>container_extension</code> indica el formato del archivo (mp4, mkv, avi, etc).</li>
+                                <li>Para compatibilidad con versiones anteriores, la acción "203" también es válida.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Series -->
+            <section id="series">
+                <h2 class="section-header">Series</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_series</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene la lista completa de series disponibles para el usuario.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_series" o "204"</td>
+                                </tr>
+                                <tr>
+                                    <td>category_id</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>ID de categoría para filtrar series</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con la lista de series.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>{
+    "user_info": { ... },
+    "server_info": { ... },
+    "series": [
+        {
+            "num": 1,
+            "name": "Breaking Bad",
+            "series_id": 789,
+            "cover": "http://example.com/images/breaking_bad.jpg",
+            "plot": "Un profesor de química diagnosticado con cáncer...",
+            "cast": "Bryan Cranston, Aaron Paul, Anna Gunn",
+            "director": "Vince Gilligan",
+            "genre": "Drama, Crimen",
+            "releaseDate": "2008-01-20",
+            "last_modified": "2023-03-15",
+            "rating": 9.4,
+            "rating_5based": 4.7,
+            "backdrop_path": ["http://example.com/images/breaking_bad_backdrop.jpg"],
+            "youtube_trailer": "HhesaQXLuRY",
+            "episode_run_time": 45,
+            "category_id": 15
+        },
+        // Más series...
+    ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Se puede usar <code>category_id</code> para filtrar series de una categoría específica.</li>
+                                <li>El campo <code>series_id</code> es necesario para obtener información detallada de temporadas y episodios.</li>
+                                <li>El campo <code>episode_run_time</code> indica la duración aproximada de los episodios en minutos.</li>
+                                <li>El campo <code>youtube_trailer</code> contiene solo el ID del video de YouTube, no la URL completa.</li>
+                                <li>Para compatibilidad con versiones anteriores, la acción "204" también es válida.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categorías -->
+            <section id="categorias">
+                <h2 class="section-header">Categorías</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_live_categories</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene las categorías de canales en vivo disponibles para el usuario.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_live_categories"</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un array JSON con las categorías de canales en vivo.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>[
+    {
+        "category_id": "1",
+        "category_name": "Deportes",
+        "parent_id": 0
+    },
+    {
+        "category_id": "2",
+        "category_name": "Noticias",
+        "parent_id": 0
+    },
+    {
+        "category_id": "3",
+        "category_name": "Entretenimiento",
+        "parent_id": 0
+    }
+]</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Esta información es útil para construir menús de navegación en la aplicación del cliente.</li>
+                                <li>El campo <code>parent_id</code> permite estructuras de categorías jerárquicas, pero generalmente es 0.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_vod_categories</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene las categorías de películas (VOD) disponibles para el usuario.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_vod_categories"</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un array JSON con las categorías de películas.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>[
+    {
+        "category_id": "10",
+        "category_name": "Acción",
+        "parent_id": 0
+    },
+    {
+        "category_id": "11",
+        "category_name": "Comedia",
+        "parent_id": 0
+    },
+    {
+        "category_id": "12",
+        "category_name": "Drama",
+        "parent_id": 0
+    }
+]</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>El ID de categoría puede usarse para filtrar películas en la llamada a <code>get_vod_streams</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_series_categories</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene las categorías de series disponibles para el usuario.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_series_categories"</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un array JSON con las categorías de series.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>[
+    {
+        "category_id": "15",
+        "category_name": "Drama",
+        "parent_id": 0
+    },
+    {
+        "category_id": "16",
+        "category_name": "Ciencia Ficción",
+        "parent_id": 0
+    },
+    {
+        "category_id": "17",
+        "category_name": "Documentales",
+        "parent_id": 0
+    }
+]</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>El ID de categoría puede usarse para filtrar series en la llamada a <code>get_series</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Guía de Programación (EPG) -->
+            <section id="epg">
+                <h2 class="section-header">Guía de Programación (EPG)</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_epg&stream_id={id}&limit={num}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene la guía de programación completa para un canal específico.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_epg"</td>
+                                </tr>
+                                <tr>
+                                    <td>stream_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del canal</td>
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>Número máximo de programas a devolver (por defecto: todos)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con la programación del canal.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>{
+    "epg_listings": [
+        {
+            "id": "123456",
+            "epg_id": "sports.tv",
+            "title": "Partido de fútbol: Barcelona vs Real Madrid",
+            "lang": "es",
+            "start": "2023-05-17 20:00:00",
+            "end": "2023-05-17 22:00:00",
+            "description": "Partido de la liga española entre FC Barcelona y Real Madrid",
+            "channel_id": "123",
+            "start_timestamp": 1621278000,
+            "stop_timestamp": 1621285200
+        },
+        {
+            "id": "123457",
+            "epg_id": "sports.tv",
+            "title": "Post partido",
+            "lang": "es",
+            "start": "2023-05-17 22:00:00",
+            "end": "2023-05-17 22:30:00",
+            "description": "Análisis post partido con los comentaristas",
+            "channel_id": "123",
+            "start_timestamp": 1621285200,
+            "stop_timestamp": 1621287000
+        }
+    ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Esta información es útil para mostrar la programación de un canal específico.</li>
+                                <li>Los timestamps están en formato UNIX (segundos desde el 1 de enero de 1970).</li>
+                                <li>No todos los canales tienen información EPG disponible.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EPG Resumido -->
+            <section id="short-epg">
+                <h2 class="section-header">EPG Resumido</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_short_epg&stream_id={id}&limit={num}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene una versión resumida de la guía de programación para un canal específico.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_short_epg"</td>
+                                </tr>
+                                <tr>
+                                    <td>stream_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del canal</td>
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+                                    <td>integer</td>
+                                    <td>No</td>
+                                    <td>Número máximo de programas a devolver (por defecto: 4)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con la programación resumida del canal.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>{
+    "epg_listings": [
+        {
+            "id": "123456",
+            "title": "Partido de fútbol: Barcelona vs Real Madrid",
+            "start": "2023-05-17 20:00:00",
+            "end": "2023-05-17 22:00:00",
+            "description": "Partido de la liga española entre FC Barcelona y Real Madrid",
+            "now_playing": 1,
+            "start_timestamp": 1621278000,
+            "stop_timestamp": 1621285200
+        },
+        {
+            "id": "123457",
+            "title": "Post partido",
+            "start": "2023-05-17 22:00:00",
+            "end": "2023-05-17 22:30:00",
+            "description": "Análisis post partido con los comentaristas",
+            "now_playing": 0,
+            "start_timestamp": 1621285200,
+            "stop_timestamp": 1621287000
+        }
+    ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Esta versión es más ligera que <code>get_epg</code> y es ideal para mostrar "Ahora y Siguiente".</li>
+                                <li>El campo <code>now_playing</code> indica si el programa está actualmente en emisión (1) o no (0).</li>
+                                <li>Por defecto devuelve 4 programas, pero puede limitarse con el parámetro <code>limit</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Archivo TV -->
+            <section id="archivo-tv">
+                <h2 class="section-header">Archivo TV</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_simple_data_table&stream_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene las grabaciones disponibles para un canal con funcionalidad de Archivo TV (Catch-up).</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_simple_data_table"</td>
+                                </tr>
+                                <tr>
+                                    <td>stream_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID del canal</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con la lista de grabaciones disponibles.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>{
+    "epg_listings": [
+        {
+            "id": "123456",
+            "title": "Noticias de la mañana",
+            "description": "Resumen de las noticias más importantes del día",
+            "start": "2023-05-16 08:00:00",
+            "end": "2023-05-16 09:00:00",
+            "channel_id": "123",
+            "start_timestamp": 1621152000,
+            "stop_timestamp": 1621155600,
+            "has_archive": 1
+        },
+        {
+            "id": "123457",
+            "title": "El tiempo",
+            "description": "Previsión meteorológica para los próximos días",
+            "start": "2023-05-16 09:00:00",
+            "end": "2023-05-16 09:15:00",
+            "channel_id": "123",
+            "start_timestamp": 1621155600,
+            "stop_timestamp": 1621156500,
+            "has_archive": 1
+        }
+    ]
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Solo los canales con <code>tv_archive=1</code> en la respuesta de <code>get_live_streams</code> tienen esta funcionalidad.</li>
+                                <li>El campo <code>has_archive</code> indica si la grabación está disponible (1) o no (0).</li>
+                                <li>Para reproducir una grabación, se debe construir una URL especial que incluye el timestamp de inicio.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detalles de Stream -->
+            <section id="detalles-stream">
+                <h2 class="section-header">Detalles de Stream</h2>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_vod_info&vod_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene información detallada sobre una película específica.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_vod_info"</td>
+                                </tr>
+                                <tr>
+                                    <td>vod_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la película</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con información detallada de la película.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>{
+    "info": {
+        "name": "El Señor de los Anillos: La Comunidad del Anillo",
+        "o_name": "The Lord of the Rings: The Fellowship of the Ring",
+        "movie_image": "http://example.com/images/lotr_poster.jpg",
+        "description": "Un hobbit de la Comarca y ocho compañeros emprenden un viaje para destruir el poderoso Anillo Único y salvar la Tierra Media del Señor Oscuro Sauron.",
+        "releasedate": "2001-12-19",
+        "year": "2001",
+        "genre": "Aventura, Fantasía",
+        "cast": "Elijah Wood, Ian McKellen, Orlando Bloom",
+        "director": "Peter Jackson",
+        "duration": "178",
+        "rating": 8.8,
+        "trailer": "https://www.youtube.com/watch?v=V75dMMIW2B4"
+    },
+    "movie_data": {
+        "stream_id": 456,
+        "stream_url": "http://example.com/movies/lotr.mp4",
+        "container_extension": "mp4"
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>Esta información es útil para mostrar detalles completos de una película antes de reproducirla.</li>
+                                <li>El campo <code>duration</code> está en minutos.</li>
+                                <li>El campo <code>trailer</code> proporciona la URL completa al tráiler en YouTube.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <div>
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-path">/player_api.php?username={user}&password={pass}&action=get_series_info&series_id={id}</span>
+                        </div>
+                    </div>
+                    <div class="endpoint-description">
+                        <p>Obtiene información detallada sobre una serie específica, incluyendo temporadas y episodios.</p>
+                        
+                        <div class="parameters">
+                            <div class="section-title">Parámetros</div>
+                            <table>
+                                <tr>
+                                    <th>Parámetro</th>
+                                    <th>Tipo</th>
+                                    <th>Requerido</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                <tr>
+                                    <td>username</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Nombre de usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Contraseña del usuario</td>
+                                </tr>
+                                <tr>
+                                    <td>action</td>
+                                    <td>string</td>
+                                    <td>Sí</td>
+                                    <td>Debe ser "get_series_info"</td>
+                                </tr>
+                                <tr>
+                                    <td>series_id</td>
+                                    <td>integer</td>
+                                    <td>Sí</td>
+                                    <td>ID de la serie</td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="response">
+                            <div class="section-title">Respuesta</div>
+                            <p>Devuelve un objeto JSON con información detallada de la serie, incluyendo temporadas y episodios.</p>
+                            <p>Ejemplo de respuesta:</p>
+                            <pre><code>{
+    "info": {
+        "name": "Breaking Bad",
+        "cover": "http://example.com/images/breaking_bad.jpg",
+        "plot": "Un profesor de química diagnosticado con cáncer inoperable de pulmón recurre a la fabricación y venta de metanfetamina para asegurar el futuro de su familia.",
+        "cast": "Bryan Cranston, Aaron Paul, Anna Gunn",
+        "director": "Vince Gilligan",
+        "genre": "Drama, Crimen",
+        "releaseDate": "2008-01-20",
+        "last_modified": "2023-03-15",
+        "rating": 9.4,
+        "backdrop_path": ["http://example.com/images/breaking_bad_backdrop.jpg"],
+        "youtube_trailer": "HhesaQXLuRY",
+        "episode_run_time": 45
+    },
+    "episodes": {
+        "1": [
+            {
+                "id": "1001",
+                "episode_num": 1,
+                "title": "Piloto",
+                "container_extension": "mp4",
+                "info": {
+                    "plot": "Un profesor de química descubre que tiene cáncer de pulmón y decide utilizar sus conocimientos para producir y vender metanfetamina.",
+                    "duration": 58,
+                    "releasedate": "2008-01-20"
+                }
+            },
+            {
+                "id": "1002",
+                "episode_num": 2,
+                "title": "Gato metido en la bolsa",
+                "container_extension": "mp4",
+                "info": {
+                    "plot": "Walter y Jesse intentan deshacerse de dos cadáveres dificultando su trabajo en el proceso.",
+                    "duration": 48,
+                    "releasedate": "2008-01-27"
+                }
+            }
+        ],
+        "2": [
+            {
+                "id": "2001",
+                "episode_num": 1,
+                "title": "Siete treinta y siete",
+                "container_extension": "mp4",
+                "info": {
+                    "plot": "Walt y Jesse enfrentan problemas con un distribuidor de drogas local después de que Jesse le roba un alijo de droga.",
+                    "duration": 47,
+                    "releasedate": "2009-03-08"
+                }
+            }
+        ]
+    }
+}</code></pre>
+                        </div>
+                        
+                        <div class="notes">
+                            <div class="section-title">Notas</div>
+                            <ul>
+                                <li>La estructura de <code>episodes</code> es un objeto donde las claves son los números de temporada y los valores son arrays de episodios.</li>
+                                <li>Cada episodio tiene un <code>id</code> único que se utiliza para la reproducción.</li>
+                                <li>El campo <code>duration</code> de cada episodio está en minutos.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+</body>
+</html>

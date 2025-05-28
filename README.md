@@ -69,6 +69,21 @@ Una vez completada la instalación:
   - Usuario: `admin`
   - Contraseña: `admin`
 
+### Documentación de la API
+
+Para obtener información detallada sobre las APIs de Xtream UI, visite:
+- [Documentación Completa de la API](https://servextex.github.io/xtream-ui-ubuntu/api_documentacion_completa.html)
+- [Documentación de la API del Player](https://servextex.github.io/xtream-ui-ubuntu/player_api_documentacion.html)
+
+La documentación incluye:
+- Endpoints disponibles
+- Parámetros requeridos
+- Ejemplos de uso
+- Respuestas esperadas
+- Código de estado HTTP
+
+> **Nota:** Se recomienda revisar la documentación de la API antes de integrar Xtream UI con otros sistemas o desarrollar aplicaciones personalizadas.
+
 > **Nota importante:** Se recomienda encarecidamente cambiar la contraseña predeterminada después del primer inicio de sesión.
 
 ### Solución de problemas
@@ -78,3 +93,5 @@ Si experimenta algún problema durante la instalación:
 2. Asegúrese de tener todos los permisos necesarios
 3. Consulte los logs de instalación en `/home/xtreamcodes/logs/`
 4. Si el problema persiste, puede buscar ayuda en la comunidad o abrir un issue en el repositorio
+
+

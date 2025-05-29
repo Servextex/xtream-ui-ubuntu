@@ -11,12 +11,12 @@ rConfigPath = "/home/xtreamcodes/iptv_xtream_codes/config"
 def doDecrypt():
     rDecrypt = decrypt()
     if rDecrypt:
-        print ("Server ID: %s%d" % (" "*10, int(rDecrypt["server_id"])))
-        print ("Host: %s%s" % (" "*15, rDecrypt["host"]))
-        print ("Port: %s%d" % (" "*15, int(rDecrypt["db_port"])))
-        print ("Username: %s%s" % (" "*11, rDecrypt["db_user"]))
-        print ("Password: %s%s" % (" "*11, rDecrypt["db_pass"]))
-        print ("Database: %s%s" % (" "*11, rDecrypt["db_name"]))
+        print("Server ID: %s%d" % (" "*10, int(rDecrypt["server_id"])))
+        print("Host: %s%s" % (" "*15, rDecrypt["host"]))
+        print("Port: %s%d" % (" "*15, int(rDecrypt["db_port"])))
+        print("Username: %s%s" % (" "*11, rDecrypt["db_user"]))
+        print("Password: %s%s" % (" "*11, rDecrypt["db_pass"]))
+        print("Database: %s%s" % (" "*11, rDecrypt["db_name"]))
     else:
         print("Config file could not be read!")
 
@@ -45,10 +45,10 @@ if __name__ == "__main__":
     except: rCommand = None
     if rCommand and rCommand.lower() == "decrypt": doDecrypt()
     elif rCommand and rCommand.lower() == "encrypt":
-        print ("Current configuration")
-        print (" ")
+        print("Current configuration")
+        print(" ")
         doDecrypt()
-        print (" ")
+        print(" ")
         rEnc = {"pconnect": 0}
         try:
             rEnc["server_id"] = int(raw_input("Server ID: %s" % (" "*10)))
@@ -57,13 +57,13 @@ if __name__ == "__main__":
             rEnc["db_user"] = raw_input("Username: %s" % (" "*11))
             rEnc["db_pass"] = raw_input("Password: %s" % (" "*11))
             rEnc["db_name"] = raw_input("Database: %s" % (" "*11))
-            print (" ")
+            print(" ")
         except:
-            print ("Invalid entries!")
+            print("Invalid entries!")
             sys.exit(1)
         try:
             encrypt(rEnc)
-            print ("Written to config file!")
-        except: print ("Couldn't write to file!")
+            print("Written to config file!")
+        except: print("Couldn't write to file!")
     else:
-        print ("Usage: config.py [ENCRYPT | DECRYPT]")
+        print("Usage: config.py [ENCRYPT | DECRYPT]")

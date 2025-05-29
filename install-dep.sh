@@ -388,12 +388,12 @@ EOF
 	$PACKAGE_INSTALLER python3-pip
 	$PACKAGE_INSTALLER python
 	$PACKAGE_INSTALLER python-pip
-	$PACKAGE_INSTALLER python2
-	$PACKAGE_INSTALLER python2-pip
+	$PACKAGE_INSTALLER python3
+	$PACKAGE_INSTALLER python3-pip
 	$PACKAGE_INSTALLER python
 	$PACKAGE_INSTALLER python-pip
 	$PACKAGE_INSTALLER python-paramiko
-	$PACKAGE_INSTALLER python2-paramiko
+	$PACKAGE_INSTALLER python3-paramiko
 	$PACKAGE_INSTALLER python3-paramiko
 	$PACKAGE_INSTALLER mcrypt
 	$PACKAGE_INSTALLER mcrypt-devel
@@ -580,8 +580,8 @@ EOF
 	$PACKAGE_INSTALLER perl-macros
 	$PACKAGE_INSTALLER perl-podlators
 	$PACKAGE_INSTALLER python-requests
-	$PACKAGE_INSTALLER python2-requests
-	$PACKAGE_INSTALLER python26-requests
+	$PACKAGE_INSTALLER python3-requests
+	$PACKAGE_INSTALLER python36-requests
 	$PACKAGE_INSTALLER python3-requests
 	$PACKAGE_INSTALLER binutils-devel
 	$PACKAGE_INSTALLER libtirpc-devel
@@ -829,7 +829,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes install libcurl3-gnutls
 	apt-get -y --force-yes install libgeoip-dev
 	apt-get -y --force-yes install python
-	apt-get -y --force-yes install python2
+	apt-get -y --force-yes install python3
 	apt-get -y --force-yes install python33
 	apt-get -y --force-yes install e2fsprogs
 	apt-get -y --force-yes install wget
@@ -841,9 +841,9 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y --force-yes install mc
 	apt-get -y --force-yes install python3-paramiko
 	apt-get -y --force-yes install python-paramiko
-	apt-get -y --force-yes install python2-paramiko
+	apt-get -y --force-yes install python3-paramiko
 	apt-get -y --force-yes install python-pip
-	apt-get -y --force-yes install python2-pip
+	apt-get -y --force-yes install python3-pip
 	apt-get -y --force-yes install python3-pip
 	apt-get -y --force-yes dist-upgrade
 	apt-get -y --force-yes install debhelper

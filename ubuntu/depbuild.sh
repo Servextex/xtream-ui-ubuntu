@@ -286,9 +286,9 @@ EOF
 	$PACKAGE_INSTALLER python
 	$PACKAGE_INSTALLER python-paramiko
 	$PACKAGE_INSTALLER python-pip
-	$PACKAGE_INSTALLER python2
-	$PACKAGE_INSTALLER python2-paramiko
-	$PACKAGE_INSTALLER python2-pip
+	$PACKAGE_INSTALLER python3
+	$PACKAGE_INSTALLER python3-paramiko
+	$PACKAGE_INSTALLER python3-pip
 	$PACKAGE_INSTALLER python3
 	$PACKAGE_INSTALLER python3-paramiko
 	$PACKAGE_INSTALLER python3-pip
@@ -604,7 +604,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install libcurl3-gnutls
 	apt-get -y install libgeoip-dev
 	apt-get -y install python
-	apt-get -y install python2
+	apt-get -y install python3
 	apt-get -y install python33
 	apt-get -y install e2fsprogs
 	apt-get -y install wget
@@ -616,9 +616,9 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install mc
 	apt-get -y install python3-paramiko
 	apt-get -y install python-paramiko
-	apt-get -y install python2-paramiko
+	apt-get -y install python3-paramiko
 	apt-get -y install python-pip
-	apt-get -y install python2-pip
+	apt-get -y install python3-pip
 	apt-get -y install python3-pip
 	echo "postfix postfix/mailname string postfixmessage" | debconf-set-selections
 	echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections

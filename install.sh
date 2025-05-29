@@ -384,7 +384,7 @@ echo -e "\\r${CHECK_MARK} Installation Of XtreamCodes Done"
 echo -n "[+] Configuration Of Mysql & Nginx..."
 #### config database
 ## add python script
-python2 << END
+python3 << END
 # coding: utf-8
 import subprocess, os, random, string, sys, shutil, socket
 from itertools import cycle, izip
@@ -444,8 +444,8 @@ rm -f install.sql
 echo -e "\\r${CHECK_MARK} Configuration Of Mysql & Nginx Done"
 echo -n "[+] Configuration Of Crons & Autorisations..."
 rm -r /home/xtreamcodes/iptv_xtream_codes/database.sql
-if ! grep -q "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python2, /usr/bin/python" /etc/sudoers; then
-    echo "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python2, /usr/bin/python" >> /etc/sudoers;
+if ! grep -q "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python3, /usr/bin/python" /etc/sudoers; then
+    echo "xtreamcodes ALL = (root) NOPASSWD: /sbin/iptables, /usr/bin/chattr, /usr/bin/python3, /usr/bin/python" >> /etc/sudoers;
 fi
 ln -s /home/xtreamcodes/iptv_xtream_codes/bin/ffmpeg /usr/bin/
 if ! grep -q "tmpfs /home/xtreamcodes/iptv_xtream_codes/streams tmpfs defaults,noatime,nosuid,nodev,noexec,mode=1777,size=90% 0 0" /etc/fstab; then
@@ -602,7 +602,7 @@ mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_bal
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE settings SET crypt_load_balancing = '$rrr' WHERE settings.id = 1;"
 #update php.ini timezone
 sed -i "s|;date.timezone =|date.timezone = $timezone|g" /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
-#replace python by python2
+#replace python by python3
 #local and security patching settings and admin_settings
 echo -e "\\r${CHECK_MARK} Configuration Of Crons & Autorisations Done"
 echo -n "[+] installation Of Admin Web Access..."

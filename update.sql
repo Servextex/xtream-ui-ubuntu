@@ -25,7 +25,7 @@ INSERT INTO `admin_settings` (`type`, `value`) VALUES
 ('reseller_view_info', '1'),
 ('active_apps', '1'),
 ('reseller_mag_to_m3u', '1'),
-('release_parser', 'python2');
+('release_parser', 'python3');
 ALTER TABLE `admin_settings`
   ADD PRIMARY KEY (`type`);
 COMMIT;

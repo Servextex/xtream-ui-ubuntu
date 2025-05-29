@@ -56,7 +56,7 @@ while getopts ":t:a:p:o:c:r:e:m:s:h:" option; do
             ;;
         h)
             echo "help usage"
-			echo "curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/master/install.sh | sudo bash -s -- -a adminusername -t timezone -p adminpassord -o adminaccesport -c clientaccesport -r apacheport -e email -m mysqlpassword -s yes"
+			echo "curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/main/install.sh | sudo bash -s -- -a adminusername -t timezone -p adminpassord -o adminaccesport -c clientaccesport -r apacheport -e email -m mysqlpassword -s yes"
 			echo "./install.sh -a adminusernamesername -t timezone -p adminpassord -o adminaccesport -c clientaccesport -r apacheport -e email -m mysqlpassword -s yes"
 			echo "option -t for set Time Zone"
 			echo "option -a Enter Your Desired Admin Login Access"
@@ -69,8 +69,8 @@ while getopts ":t:a:p:o:c:r:e:m:s:h:" option; do
 			echo "option -s for silent use yes option for remove confirm install"
 			echo "option -h for write this help"
 			echo "full exeple"
-			echo "curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/master/install.sh | bash -s -- -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
-			echo "./install.sh -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
+			echo "curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/main/install.sh | bash -s -- -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e Servextex@example.com -m mysqlpassword -s yes"
+			echo "./install.sh -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e Servextex@example.com -m mysqlpassword -s yes"
 			exit
             ;;
         *)
@@ -350,7 +350,7 @@ uname -a
 disable_file() {
     mv "$1" "$1_disabled_by_xtream_ui" &> /dev/null
 }
-wget -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/depbuild.sh | bash
+wget -qO- https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/ubuntu/depbuild.sh | bash
 
 
 #--- List all already installed packages (may help to debug)
@@ -435,7 +435,7 @@ mysql()
 encrypt(rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
 modifyNginx()
 END
-wget -qO install.sql https://github.com/Servextex/xtream-ui-ubuntu/raw/master/install.sql
+wget -qO install.sql https://github.com/Servextex/xtream-ui-ubuntu/raw/main/install.sql
 sed -i "s|adminn|$adminn|g" install.sql
 sed -i "s|kkkk|$kkkk|g" install.sql
 sed -i "s|EMAIL|$EMAIL|g" install.sql
@@ -614,13 +614,13 @@ echo -n "[+] installation Of Admin Web Access..."
 wget -q -O /tmp/update.zip http://xcodes.mine.nu/XCodes/update.zip
 unzip -o /tmp/update.zip -d /tmp/update/
 chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
-rm -rf /tmp/update/XtreamUI-master/php
-rm -rf /tmp/update/XtreamUI-master/GeoLite2.mmdb
-cp -rf /tmp/update/XtreamUI-master/* /home/xtreamcodes/iptv_xtream_codes/
-rm -rf /tmp/update/XtreamUI-master
+rm -rf /tmp/update/XtreamUI-main/php
+rm -rf /tmp/update/XtreamUI-main/GeoLite2.mmdb
+cp -rf /tmp/update/XtreamUI-main/* /home/xtreamcodes/iptv_xtream_codes/
+rm -rf /tmp/update/XtreamUI-main
 rm /tmp/update.zip
 rm -rf /tmp/update
-xcversion=amidevousv1
+xcversion=Servextexv1
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$xcversion' WHERE admin_settings.type = 'panel_version'; "
 chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
 wget -O /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb https://bitbucket.org/emre1393/xtreamui_mirror/downloads/GeoLite2.mmdb
@@ -638,11 +638,11 @@ killall php-fpm
 rm -f /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
 rm -f /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.py
 rm -f /home/xtreamcodes/iptv_xtream_codes/crons/balancer.php
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/balancer.php -O /home/xtreamcodes/iptv_xtream_codes/crons/balancer.php
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/balancer.sh -O /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
+wget https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/balancer.php -O /home/xtreamcodes/iptv_xtream_codes/crons/balancer.php
+wget https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/balancer.sh -O /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/pytools/balancer.sh
 rm -f /home/xtreamcodes/iptv_xtream_codes/start_services.sh
-wget https://github.com/Servextex/xtream-ui-ubuntu/raw/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+wget https://github.com/Servextex/xtream-ui-ubuntu/raw/main/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 echo "CentOS or Fedora Require nginx rebuild"
 echo "please wait this operation can be long"

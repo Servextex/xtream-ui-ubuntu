@@ -37,7 +37,7 @@ OTHERMIRROR="$OTHERMIRROR|deb $MIRRORSITE $DISTRIBUTION-updates $COMPONENTS"
 OTHERMIRROR="$OTHERMIRROR|deb-src $MIRRORSITE $DISTRIBUTION-updates $COMPONENTS"
 OTHERMIRROR="$OTHERMIRROR|deb $MIRRORSITE $DISTRIBUTION-backports $COMPONENTS"
 OTHERMIRROR="$OTHERMIRROR|deb-src $MIRRORSITE $DISTRIBUTION-backports $COMPONENTS"
-OTHERMIRROR="$OTHERMIRROR|deb [trusted=yes] https://github.com/Servextex/xtream-ui-ubuntu/raw/master/package/debian $DISTRIBUTION main"
+OTHERMIRROR="$OTHERMIRROR|deb [trusted=yes] https://github.com/Servextex/xtream-ui-ubuntu/raw/main/package/debian $DISTRIBUTION main"
 #export http_proxy=http://your-proxy:8080/
 USESHM=yes
 USEPROC=yes

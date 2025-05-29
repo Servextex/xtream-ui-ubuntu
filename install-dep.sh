@@ -945,7 +945,7 @@ fi
 if [[ "$OS" = "CentOs" && "$VER" = "6" ]] ; then
 yum -y install tcl-devel
 rpm -i https://vault.centos.org/centos/7/os/Source/SPackages/sqlite-3.7.17-8.el7_7.1.src.rpm
-wget -O $(rpm --eval %{_topdir})/SPECS/sqlite.spec https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/centos/6/sqlite.spec
+wget -O $(rpm --eval %{_topdir})/SPECS/sqlite.spec https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/centos/6/sqlite.spec
 rpmbuild -ba $(rpm --eval %{_topdir})/SPECS/sqlite.spec
 yum -y install $(rpm --eval %{_topdir})/RPMS/sqlite-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/sqlite-devel-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/sqlite-doc-3.7.17-8.el6.1.noarch.rpm $(rpm --eval %{_topdir})/RPMS/lemon-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/sqlite-tcl-3.7.17-8.el6.1.x86_64.rpm
 yum -y install $(rpm --eval %{_topdir})/RPMS/x86_64/sqlite-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/x86_64/sqlite-devel-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/noarch/sqlite-doc-3.7.17-8.el6.1.noarch.rpm $(rpm --eval %{_topdir})/RPMS/x86_64/lemon-3.7.17-8.el6.1.x86_64.rpm $(rpm --eval %{_topdir})/RPMS/x86_64/sqlite-tcl-3.7.17-8.el6.1.x86_64.rpm
@@ -953,7 +953,7 @@ yum -y remove oniguruma-devel
 yum -y install oniguruma5php-devel
 
 rpm -i https://vault.centos.org/centos/7/os/Source/SPackages/autoconf-2.69-11.el7.src.rpm
-wget -O $(rpm --eval %{_topdir})/SPECS/autoconf.spec https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/centos/6/autoconf.spec
+wget -O $(rpm --eval %{_topdir})/SPECS/autoconf.spec https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/centos/6/autoconf.spec
 rpmbuild -ba $(rpm --eval %{_topdir})/SPECS/autoconf.spec
 yum -y install $(rpm --eval %{_topdir})/RPMS/autoconf-2.69-11.el6.noarch.rpm
 yum -y install $(rpm --eval %{_topdir})/RPMS/noarch/autoconf-2.69-11.el6.noarch.rpm

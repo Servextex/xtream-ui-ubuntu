@@ -13208,7 +13208,7 @@ readers do not read off random characters that represent icons */
 .fa-cc-jcb:before {
   content: "\f24b"; }
 
-.fa-cc-mastercard:before {
+.fa-cc-maincard:before {
   content: "\f1f1"; }
 
 .fa-cc-paypal:before {
@@ -17243,7 +17243,7 @@ readers do not read off random characters that represent icons */
 .la-cc-jcb:before {
   content: "\f173"; }
 
-.la-cc-mastercard:before {
+.la-cc-maincard:before {
   content: "\f174"; }
 
 .la-cc-paypal:before {

@@ -1,7 +1,7 @@
 Source: xtreamui-freetype2
 Section: unknown
 Priority: optional
-Maintainer: root <amidevous@gmail.com>
+Maintainer: root <Servextex@gmail.com>
 Build-Depends: debhelper, autotools-dev, libc6-dev | libc-dev, zlib1g-dev | libz-dev, libpng-dev
 Standards-Version: 4.4.1
 Homepage: <insert the upstream URL, if relevant>

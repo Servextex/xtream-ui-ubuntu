@@ -44,7 +44,7 @@ while getopts ":t:c:i:l:m:h:" option; do
             ;;
         h)
             echo "help usage"
-			echo "curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/master/install.sh | sudo bash -s -- -a adminusername -t timezone -p adminpassord -o adminaccesport -c clientaccesport -r apacheport -e email -m mysqlpassword -s yes"
+			echo "curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/main/install.sh | sudo bash -s -- -a adminusername -t timezone -p adminpassord -o adminaccesport -c clientaccesport -r apacheport -e email -m mysqlpassword -s yes"
 			echo "./install.sh -a adminusernamesername -t timezone -p adminpassord -o adminaccesport -c clientaccesport -r apacheport -e email -m mysqlpassword -s yes"
 			echo "option -t for set Time Zone"
 			echo "option -a Enter Your Desired Admin Login Access"
@@ -57,8 +57,8 @@ while getopts ":t:c:i:l:m:h:" option; do
 			echo "option -s for silent use yes option for remove confirm install"
 			echo "option -h for write this help"
 			echo "full exeple"
-			echo "curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/master/install.sh | bash -s -- -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
-			echo "./install.sh -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e amidevous@example.com -m mysqlpassword -s yes"
+			echo "curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/main/install.sh | bash -s -- -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e Servextex@example.com -m mysqlpassword -s yes"
+			echo "./install.sh -a admin -t Europe/Paris -p admin -o 25500 -c 80 -r 8080 -e Servextex@example.com -m mysqlpassword -s yes"
 			exit
             ;;
         *)
@@ -845,7 +845,7 @@ echo "@reboot root sudo /home/xtreamcodes/iptv_xtream_codes/start_services.sh" >
 killall php-fpm
 rm -f /home/xtreamcodes/iptv_xtream_codes/php/VaiIb8.pid /home/xtreamcodes/iptv_xtream_codes/php/JdlJXm.pid /home/xtreamcodes/iptv_xtream_codes/php/CWcfSP.pid
 rm -f /home/xtreamcodes/iptv_xtream_codes/start_services.sh
-wget https://github.com/Servextex/xtream-ui-ubuntu/raw/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+wget https://github.com/Servextex/xtream-ui-ubuntu/raw/main/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 if [[ "$OS" = "CentOs" || "$OS" = "Fedora" || "$OS" = "Centos Stream" ]]; then
 echo "CentOS or Fedora Require nginx rebuild"

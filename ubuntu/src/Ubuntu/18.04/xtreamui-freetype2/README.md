@@ -6,7 +6,7 @@
 
 `sudo apt-get -y install pbuilder debhelper cdbs lintian build-essential fakeroot devscripts dh-make dput wget ca-certificates`
 
-`sudo wget -O /etc/pbuilder/ubuntu-bionic-amd64 https://github.com/Servextex/xtream-ui-ubuntu/raw/master/ubuntu/src/pbuilder/ubuntu-bionic-amd64`
+`sudo wget -O /etc/pbuilder/ubuntu-bionic-amd64 https://github.com/Servextex/xtream-ui-ubuntu/raw/main/ubuntu/src/pbuilder/ubuntu-bionic-amd64`
 
 `sudo pbuilder create --configfile /etc/pbuilder/ubuntu-bionic-amd64`
 
@@ -14,7 +14,7 @@
 
 `sudo pbuilder login --configfile /etc/pbuilder/ubuntu-bionic-amd64`
 
-`wget -O $HOME/build-freetype.sh https://github.com/Servextex/xtream-ui-ubuntu/raw/master/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/build.sh`
+`wget -O $HOME/build-freetype.sh https://github.com/Servextex/xtream-ui-ubuntu/raw/main/ubuntu/src/Ubuntu/18.04/xtreamui-freetype2/build.sh`
 
 `sudo bash $HOME/build-freetype.sh`
 

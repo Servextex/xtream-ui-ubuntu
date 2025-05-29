@@ -73,6 +73,6 @@ $PACKAGE_REMOVER xtreamui-freetype2 xtreamui-php xtreamui-php-geoip xtreamui-php
 rm -rf /home/xtreamcodes/iptv_xtream_codes/php
 $PACKAGE_INSTALLER daemonize xtreamui-freetype2 xtreamui-php xtreamui-php-geoip xtreamui-php-ioncube-loader xtreamui-php-mcrypt
 $PACKAGE_INSTALLER xtreamui-ffmpeg
-wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+wget https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 fi

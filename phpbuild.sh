@@ -1,5 +1,5 @@
 #!/bin/bash
-# wget --no-check-certificate -qO- https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/phpbuild.sh | bash -s
+# wget --no-check-certificate -qO- https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/phpbuild.sh | bash -s
 if [ -f "/home/xtreamcodes/iptv_xtream_codes/php-7.4.33" ]; then
     echo "update exists."
 else
@@ -35,7 +35,7 @@ elif [ -f /etc/os-release ]; then
     VER=$(uname -r)
 fi
 ARCH=$(uname -m)
-#wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/install-dep.sh -O /root/depbuild.sh && bash /root/install-dep.sh
+#wget https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/install-dep.sh -O /root/depbuild.sh && bash /root/install-dep.sh
 if [[ "$OS" = "CentOs" && "$VER" = "6" && "$ARCH" == "x86_64" ]] ; then
 /opt/rh/devtoolset-9/enable
 source /opt/rh/devtoolset-9/enable
@@ -269,7 +269,7 @@ if [ ! -f "/home/xtreamcodes/iptv_xtream_codes/php/lib/php/extensions/no-debug-n
     exit 0
 fi
 cd /root
-wget --no-check-certificate https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
+wget --no-check-certificate https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/ubuntu/php.ini -O /home/xtreamcodes/iptv_xtream_codes/php/lib/php.ini
 cd /root
 rm -rf /root/phpbuild/
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/bin/
@@ -286,19 +286,19 @@ mkdir -p /tmp/update/
 wget "https://github.com/Servextex/xtream-ui-ubuntu/releases/download/start/update.zip" -O /tmp/update/update.zip
 unzip /tmp/update/update.zip -d /tmp/update/
 rm -f /tmp/update/update.zip
-sudo cp -rf /tmp/update/XtreamUI-master/admin/* /home/xtreamcodes/iptv_xtream_codes/admin/
-sudo cp /tmp/update/XtreamUI-master/permissions.sh /home/xtreamcodes/iptv_xtream_codes/
+sudo cp -rf /tmp/update/XtreamUI-main/admin/* /home/xtreamcodes/iptv_xtream_codes/admin/
+sudo cp /tmp/update/XtreamUI-main/permissions.sh /home/xtreamcodes/iptv_xtream_codes/
 sudo chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 sudo rm -rf /home/xtreamcodes/iptv_xtream_codes/pytools/
 sudo mkdir -p /home/xtreamcodes/iptv_xtream_codes/pytools/
-sudo cp -rf /tmp/update/XtreamUI-master/pytools/* /home/xtreamcodes/iptv_xtream_codes/pytools/
-rm -rf /tmp/update/XtreamUI-master
+sudo cp -rf /tmp/update/XtreamUI-main/pytools/* /home/xtreamcodes/iptv_xtream_codes/pytools/
+rm -rf /tmp/update/XtreamUI-main
 rm -rf /tmp/update
 sudo chown -R xtreamcodes:xtreamcodes /home/xtreamcodes/
 sudo chmod +x /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 sudo /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 sudo find /home/xtreamcodes/ -type d -not \( -name .update -prune \) -exec chmod -R 777 {} +
-sudo wget https://raw.githubusercontent.com/amidevous/xtream-ui-ubuntu20.04/master/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
+sudo wget https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/main/start_services.sh -O /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 sudo chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 /home/xtreamcodes/iptv_xtream_codes/permissions.sh
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh

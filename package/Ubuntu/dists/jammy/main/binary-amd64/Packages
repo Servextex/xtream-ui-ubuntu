@@ -1,7 +1,7 @@
 Package: xtreamui-freetype2
 Version: 2.12.1-2.Ubuntu-jammy
 Architecture: amd64
-Maintainer: root <amidevous@gmail.com>
+Maintainer: root <Servextex@gmail.com>
 Installed-Size: 2646
 Depends: libc6 (>= 2.33), libpng16-16 (>= 1.6.2-1), zlib1g (>= 1:1.1.4)
 Homepage: <insert the upstream URL, if relevant>

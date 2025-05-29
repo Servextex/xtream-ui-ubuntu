@@ -2,7 +2,7 @@
 
 versión dev no usar
 
-`curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/master/install.sh | bash -s -- arg`
+`curl -L https://github.com/Servextex/xtream-ui-ubuntu/raw/main/install.sh | bash -s -- arg`
 
 Este es un espejo de instalación para el software xtream ui en Ubuntu 20.04.
 Incluye NGINX 1.19.2 y PHP 7.3.25.
@@ -26,7 +26,7 @@ Nota: La actividad HLS se informa incorrectamente. Debe usar la salida mpegts y 
 
 - Gracias a GTA por la interfaz original de xtream-ui admin
 - Gracias a emre1393 por ser la sabiduría de la comunidad xui
-- Gracias a amidevous por la interfaz original de xtream-ui admin
+- Gracias a Servextex por la interfaz original de xtream-ui admin
 
 ## 🚀 Instalación de Xtream UI
 

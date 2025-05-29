@@ -1,7 +1,7 @@
 Package: xtreamui-freetype2
 Version: 2.12.1-2.debian-buster
 Architecture: amd64
-Maintainer: root <amidevous@gmail.com>
+Maintainer: root <Servextex@gmail.com>
 Installed-Size: 2665
 Depends: libc6 (>= 2.14), libpng16-16 (>= 1.6.2-1), zlib1g (>= 1:1.1.4)
 Homepage: <insert the upstream URL, if relevant>

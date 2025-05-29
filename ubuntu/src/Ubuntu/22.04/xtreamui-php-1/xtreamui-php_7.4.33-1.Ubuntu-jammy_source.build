@@ -2,7 +2,7 @@
 dpkg-buildpackage: info: source package xtreamui-php
 dpkg-buildpackage: info: source version 7.4.33-1.Ubuntu-jammy
 dpkg-buildpackage: info: source distribution jammy
-dpkg-buildpackage: info: source changed by Devous Amy <amidevous@gmail.com>
+dpkg-buildpackage: info: source changed by Devous Amy <Servextex@gmail.com>
  dpkg-source --before-build .
 dpkg-source: info: using patch list from debian/patches/series
 dpkg-source: info: applying 0049-Add-minimal-OpenSSL-3.0-patch.patch
@@ -54,9 +54,9 @@ W: xtreamui-php source: source-contains-prebuilt-windows-binary ext/standard/tes
 W: xtreamui-php source: space-in-std-shortname-in-dep5-copyright <special license> [debian/copyright:9]
 Finished running lintian.
 Now signing changes and any dsc files...
- signfile dsc xtreamui-php_7.4.33-1.Ubuntu-jammy.dsc Devous Amy <amidevous@gmail.com>
+ signfile dsc xtreamui-php_7.4.33-1.Ubuntu-jammy.dsc Devous Amy <Servextex@gmail.com>
 gpg: directory '/root/.gnupg' created
 gpg: keybox '/root/.gnupg/pubring.kbx' created
-gpg: skipped "Devous Amy <amidevous@gmail.com>": No secret key
+gpg: skipped "Devous Amy <Servextex@gmail.com>": No secret key
 gpg: /tmp/debsign.QtBvH7wj/xtreamui-php_7.4.33-1.Ubuntu-jammy.dsc: clear-sign failed: No secret key
 debsign: gpg error occurred!  Aborting....

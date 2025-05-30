@@ -582,40 +582,51 @@ def print_completion_info(admin_user, admin_pass, admin_port, mysql_pass, db_pas
     protocol = "https" if ssl_enabled else "http"
     server = domain if domain else ip_addr
     
-    info = f"""
-─────────────────  Guardado en: /root/Xtreaminfo.txt  ─────────────────
-│ ACCESO AL PANEL: {protocol}://{server}:{admin_port}
-│ USUARIO: {admin_user}
-│ CONTRASEÑA: {admin_pass}
-│ CONTRASEÑA MYSQL root: {mysql_pass}
-│ CONTRASEÑA MYSQL user_iptvpro: {db_pass}
-│ DOMINIO CONFIGURADO: {domain if domain else 'No configurado'}
-│ SSL HABILITADO: {'Sí' if ssl_enabled else 'No'}
-────────────────────────────────────────────────────────────────────
-"""
+    # Dibujar un cuadro con formato más limpio
+    box_width = 70
+    title = "INSTALACIÓN COMPLETADA"
+    info_title = f"Guardado en: /root/Xtreaminfo.txt"
+    
+    # Líneas superiores
+    top_line = "┌" + "─" * (box_width - 2) + "┐"
+    title_line = "│" + title.center(box_width - 2) + "│"
+    divider = "├" + "─" * (box_width - 2) + "┤"
+    info_title_line = "│" + info_title.center(box_width - 2) + "│"
+    
+    # Datos de acceso
+    panel_access = f"ACCESO AL PANEL: {protocol}://{server}:{admin_port}"
+    username = f"USUARIO: {admin_user}"
+    password = f"CONTRASEÑA: {admin_pass}"
+    mysql_root = f"CONTRASEÑA MYSQL root: {mysql_pass}"
+    mysql_user = f"CONTRASEÑA MYSQL user_iptvpro: {db_pass}"
+    domain_info = f"DOMINIO CONFIGURADO: {domain if domain else 'No configurado'}"
+    ssl_info = f"SSL HABILITADO: {'Sí' if ssl_enabled else 'No'}"
+    
+    # Formatear cada línea para que se vea bien dentro del cuadro
+    data_lines = []
+    for data in [panel_access, username, password, mysql_root, mysql_user, domain_info, ssl_info]:
+        data_lines.append("│ " + data.ljust(box_width - 4) + " │")
+    
+    # Línea inferior
+    bottom_line = "└" + "─" * (box_width - 2) + "┘"
+    
+    # Construir la cadena completa
+    info = "\n" + top_line + "\n"
+    info += title_line + "\n"
+    info += divider + "\n"
+    info += info_title_line + "\n"
+    info += divider + "\n"
+    
+    # Añadir cada línea de datos
+    for line in data_lines:
+        info += line + "\n"
+    
+    info += bottom_line + "\n"
     print(info)
     
-    # Guardar la información en un archivo
+    # Guardar la información en un archivo con formato similar
     with open("/root/Xtreaminfo.txt", "w") as f:
-        f.write(f"""
-───────────────────────────  INFO  ─────────────────────────────────
-│
-│ ACCESO AL PANEL: {protocol}://{server}:{admin_port}
-│ 
-│ USUARIO: {admin_user}
-│
-│ CONTRASEÑA: {admin_pass}
-│ 
-│ CONTRASEÑA MYSQL root: {mysql_pass}
-│
-│ CONTRASEÑA MYSQL user_iptvpro: {db_pass}
-│ 
-│ DOMINIO CONFIGURADO: {domain if domain else 'No configurado'}
-│
-│ SSL HABILITADO: {'Sí' if ssl_enabled else 'No'}
-│ 
-────────────────────────────────────────────────────────────────────
-""")
+        f.write(info)
 
 def main():
     """Función principal que ejecuta el instalador"""
@@ -946,12 +957,16 @@ def main():
     # Iniciar servicios
     run_command(f"{PANEL_PATH}/start_services.sh")
     
-    # Mostrar información de finalización
-    print(f"{Color.CHECK_MARK} Configuración de inicio automático completada")
-    print(" ")
-    print(" ┌────────────────────────────────────────────┐ ")
-    print(" │[R]        XtreamCodes está listo...       │ ")
-    print(" └────────────────────────────────────────────┘ ")
+    # Mostrar información de finalización con mejor formato
+    print(f"\n{Color.CHECK_MARK} Configuración de inicio automático completada\n")
+    
+    # Crear un cuadro centrado más estético
+    ready_box_width = 50
+    ready_message = "[R] XtreamCodes está listo..."
+    
+    print(" " + "┌" + "─" * ready_box_width + "┐")
+    print(" " + "│" + ready_message.center(ready_box_width) + "│")
+    print(" " + "└" + "─" * ready_box_width + "┘\n")
     
     # Imprimir información de instalación
     print_completion_info(admin_user, admin_pass, admin_port, mysql_pass, xpass, ip_addr, domain, ssl_enabled)

@@ -479,9 +479,40 @@ def setup_system_files():
     # Establecer permisos
     run_command(f"chmod -R 0777 {PANEL_PATH}")
     run_command(f"chown xtreamcodes:xtreamcodes -R {PANEL_PATH}")
-    run_command(f"chmod +x {PANEL_PATH}/start_services.sh")
-    run_command(f"chmod +x {PANEL_PATH}/permissions.sh")
-    run_command(f"chmod -R 0777 {PANEL_PATH}/crons")
+    
+    # Verificar que los archivos existen antes de ejecutar comandos
+    if os.path.exists(f"{PANEL_PATH}/start_services.sh"):
+        run_command(f"chmod +x {PANEL_PATH}/start_services.sh")
+    else:
+        print(f"Advertencia: {PANEL_PATH}/start_services.sh no encontrado")
+        # Crear un archivo básico de start_services.sh si no existe
+        with open(f"{PANEL_PATH}/start_services.sh", "w") as f:
+            f.write("#!/bin/bash\n\n# Archivo generado por el instalador\n")
+            f.write(f"cd {PANEL_PATH}\n")
+            f.write("./nginx/sbin/nginx\n")
+            f.write("./nginx_rtmp/sbin/nginx_rtmp\n")
+            f.write("./php/sbin/php-fpm\n")
+        run_command(f"chmod +x {PANEL_PATH}/start_services.sh")
+    
+    if os.path.exists(f"{PANEL_PATH}/permissions.sh"):
+        run_command(f"chmod +x {PANEL_PATH}/permissions.sh")
+    else:
+        print(f"Advertencia: {PANEL_PATH}/permissions.sh no encontrado")
+        # Crear un archivo básico de permissions.sh si no existe
+        with open(f"{PANEL_PATH}/permissions.sh", "w") as f:
+            f.write("#!/bin/bash\n\n# Archivo generado por el instalador\n")
+            f.write(f"chown -R xtreamcodes:xtreamcodes {PANEL_PATH}\n")
+            f.write(f"chmod -R 0777 {PANEL_PATH}\n")
+        run_command(f"chmod +x {PANEL_PATH}/permissions.sh")
+    
+    # Verificar que la carpeta crons existe
+    if os.path.exists(f"{PANEL_PATH}/crons"):
+        run_command(f"chmod -R 0777 {PANEL_PATH}/crons")
+    else:
+        print(f"Advertencia: {PANEL_PATH}/crons no encontrado")
+        # Crear la carpeta si no existe
+        run_command(f"mkdir -p {PANEL_PATH}/crons")
+        run_command(f"chmod -R 0777 {PANEL_PATH}/crons")
 
 def download_and_setup_additional_files():
     """Descarga y configura archivos adicionales"""
@@ -869,9 +900,19 @@ def main():
     
     # Crear configuración de Nginx con o sin dominio/SSL
     if domain:
-        setup_nginx_with_domain(admin_port, client_port, domain, ssl_enabled)
-        if ssl_enabled:
-            install_ssl(domain, email, os_type)
+        try:
+            # Verificar si la función existe
+            if 'setup_nginx_with_domain' in globals():
+                setup_nginx_with_domain(admin_port, client_port, domain, ssl_enabled)
+                if ssl_enabled:
+                    install_ssl(domain, email, os_type)
+            else:
+                print("La función setup_nginx_with_domain no está disponible. Usando configuración estándar.")
+                create_full_nginx_conf(client_port)
+        except Exception as e:
+            print(f"Error al configurar Nginx con dominio: {e}")
+            print("Usando configuración estándar sin dominio.")
+            create_full_nginx_conf(client_port)
     else:
         create_full_nginx_conf(client_port)
     
@@ -917,6 +958,216 @@ def main():
 
 if __name__ == "__main__":
     main()
+def install_ssl(domain, email, os_type):
+    """Instala certificado SSL usando Certbot para el dominio especificado"""
+    print(f"[+] Instalando certificado SSL para {domain}...")
+    
+    # Instalar Certbot según el sistema operativo
+    if os_type in ["Ubuntu", "debian"]:
+        run_command("apt-get update")
+        run_command("apt-get install -y certbot python3-certbot-nginx")
+    else:  # CentOS, Fedora
+        run_command("yum install -y epel-release")
+        run_command("yum install -y certbot python3-certbot-nginx")
+    
+    # Obtener certificado SSL con Certbot
+    run_command(f"certbot --nginx --non-interactive --agree-tos --email {email} -d {domain}")
+    
+    # Verificar que se haya instalado correctamente
+    if os.path.exists(f"/etc/letsencrypt/live/{domain}/fullchain.pem"):
+        print(f"{Color.CHECK_MARK} Certificado SSL instalado correctamente para {domain}")
+        return True
+    else:
+        print(f"{Color.FAIL}Error al instalar certificado SSL para {domain}{Color.ENDC}")
+        return False
+
+def setup_nginx_with_domain(admin_port, client_port, domain, ssl_enabled):
+    """Configura Nginx con un dominio específico y SSL si está habilitado"""
+    nginx_conf_path = f"{PANEL_PATH}/nginx/conf/nginx.conf"
+    
+    # Configuración base de Nginx
+    nginx_conf = f"""user  xtreamcodes;
+worker_processes  auto;
+
+worker_rlimit_nofile 300000;
+events {{
+    worker_connections  16000;
+    use epoll;
+    accept_mutex on;
+    multi_accept on;
+}}
+thread_pool pool_xtream threads=32 max_queue=0;
+http {{
+
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile           on;
+    tcp_nopush         on;
+    tcp_nodelay        on;
+    reset_timedout_connection on;
+    gzip off;
+    fastcgi_read_timeout 200;
+    access_log off;
+    keepalive_timeout 10;
+    include balance.conf;
+    send_timeout 20m;	
+    sendfile_max_chunk 512k;
+    lingering_close off;
+    aio threads=pool_xtream;
+    client_body_timeout 13s;
+    client_header_timeout 13s;
+    client_max_body_size 3m;
+
+    limit_req_zone $binary_remote_addr zone=one:30m rate=20r/s;
+    server {{
+        listen {client_port};
+"""
+
+    # Añadir configuración SSL si está habilitado
+    if ssl_enabled:
+        nginx_conf += f"""        listen 443 ssl;
+        ssl_certificate /etc/letsencrypt/live/{domain}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{domain}/privkey.pem;
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_prefer_server_ciphers on;
+        ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:SSL:10m;
+        ssl_session_tickets off;
+        ssl_stapling on;
+        ssl_stapling_verify on;
+        
+        # Redirigir HTTP a HTTPS
+        if ($scheme != "https") {{
+            return 301 https://$host$request_uri;
+        }}
+"""
+
+    # Configuración de servidor para cliente
+    nginx_conf += f"""        server_name {domain if domain else '_'};
+        index index.php index.html index.htm;
+        root {PANEL_PATH}/wwwdir/;
+        server_tokens off;
+        chunked_transfer_encoding off;
+
+        if ( $request_method !~ ^(GET|POST)$ ) {{
+            return 200;
+        }}
+
+        rewrite_log on;
+        rewrite ^/live/(.*)/(.*)/(.*)\.(.*) /streaming/clients_live.php?username=$1&password=$2&stream=$3&extension=$4 break;
+        rewrite ^/movie/(.*)/(.*)/(.*) /streaming/clients_movie.php?username=$1&password=$2&stream=$3&type=movie break;
+        rewrite ^/series/(.*)/(.*)/(.*) /streaming/clients_movie.php?username=$1&password=$2&stream=$3&type=series break;
+        rewrite ^/(.*)/(.*)/(.*).ch$ /streaming/clients_live.php?username=$1&password=$2&stream=$3&extension=ts break;
+        rewrite ^/(.*).ch$ /streaming/clients_live.php?extension=ts&stream=$1&qs=$query_string break;
+        rewrite ^/ch(.*).m3u8$ /streaming/clients_live.php?extension=m3u8&stream=$1&qs=$query_string break;
+        rewrite ^/hls/(.*)/(.*)/(.*)/(.*)/(.*) /streaming/clients_live.php?extension=m3u8&username=$1&password=$2&stream=$3&type=hls&segment=$5&token=$4 break;
+        rewrite ^/hlsr/(.*)/(.*)/(.*)/(.*)/(.*)/(.*) /streaming/clients_live.php?token=$1&username=$2&password=$3&segment=$6&stream=$4&key_seg=$5 break;
+        rewrite ^/timeshift/(.*)/(.*)/(.*)/(.*)/(.*)\.(.*) /streaming/timeshift.php?username=$1&password=$2&stream=$5&extension=$6&duration=$3&start=$4 break;
+        rewrite ^/timeshifts/(.*)/(.*)/(.*)/(.*)/(.*)\.(.*) /streaming/timeshift.php?username=$1&password=$2&stream=$4&extension=$6&duration=$3&start=$5 break;
+        
+        rewrite ^/(.*)/(.*)/(\d+) /streaming/clients_live.php?username=$1&password=$2&stream=$3&extension=ts break;
+        #add pvr support
+        rewrite ^/server/load.php$ /portal.php break;
+        
+        location /stalker_portal/c {{
+            alias {PANEL_PATH}/wwwdir/c;
+        }}
+        
+        #FFmpeg Report Progress
+        location = /progress.php {{
+            allow 127.0.0.1;
+            deny all;
+            fastcgi_pass php;
+            include fastcgi_params;
+            fastcgi_ignore_client_abort on;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        }}
+
+
+        location ~ \.php$ {{
+            limit_req zone=one burst=8;
+            try_files $uri =404;
+            fastcgi_index index.php;
+            fastcgi_pass php;
+            include fastcgi_params;
+            fastcgi_buffering on;
+            fastcgi_buffers 96 32k;
+            fastcgi_buffer_size 32k;
+            fastcgi_max_temp_file_size 0;
+            fastcgi_keep_conn on;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        }}
+    }}
+    
+    # Admin Panel Server
+    server {{
+        listen {admin_port};"""
+
+    # Agregar SSL para el panel de administración si está habilitado
+    if ssl_enabled:
+        nginx_conf += f"""
+        listen {admin_port} ssl;
+        ssl_certificate /etc/letsencrypt/live/{domain}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{domain}/privkey.pem;
+        ssl_protocols TLSv1.2 TLSv1.3;
+"""
+
+    nginx_conf += f"""
+        server_name {domain if domain else '_'};
+        index index.php index.html index.htm;
+        root {PANEL_PATH}/admin/;
+
+        location ~ \.php$ {{
+            limit_req zone=one burst=8;
+            try_files $uri =404;
+            fastcgi_index index.php;
+            fastcgi_pass php;
+            include fastcgi_params;
+            fastcgi_buffering on;
+            fastcgi_buffers 96 32k;
+            fastcgi_buffer_size 32k;
+            fastcgi_max_temp_file_size 0;
+            fastcgi_keep_conn on;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+        }}
+    }}
+    
+    #ISP CONFIGURATION
+    server {{
+         listen 8805;
+         root {PANEL_PATH}/isp/;
+         location / {{
+                      allow 127.0.0.1;
+                      deny all;
+         }}
+         location ~ \.php$ {{
+                             limit_req zone=one burst=8;
+                             try_files $uri =404;
+                             fastcgi_index index.php;
+                             fastcgi_pass php;
+                             include fastcgi_params;
+                             fastcgi_buffering on;
+                             fastcgi_buffers 96 32k;
+                             fastcgi_buffer_size 32k;
+                             fastcgi_max_temp_file_size 0;
+                             fastcgi_keep_conn on;
+                             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                             fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+         }}
+    }}
+}}
+"""
+
+    # Escribir la configuración de Nginx
+    with open(nginx_conf_path, "w") as f:
+        f.write(nginx_conf)
+    
+    return True
 def install_ssl(domain, email, os_type):
     """Instala certificado SSL usando Certbot para el dominio especificado"""
     print(f"[+] Instalando certificado SSL para {domain}...")

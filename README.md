@@ -57,8 +57,20 @@ Siga estos pasos para instalar Xtream UI en su sistema. Este instalador es compa
    ```
 
 4. **Iniciar la instalación**
+
+   **Con el instalador Bash (Original):**
    ```bash
    sudo bash install.sh
+   ```
+   
+   **O con el nuevo instalador Python (con soporte para dominio y SSL):**
+   ```bash
+   sudo python3 install.py
+   ```
+   
+   Para instalar con dominio y SSL usando Python:
+   ```bash
+   sudo python3 install.py -d tudominio.com --ssl
    ```
 
 ### Post-instalación

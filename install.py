@@ -673,14 +673,58 @@ def main():
     if not timezone:
         # Instalar tzdata si es necesario
         run_command(f"{package_installer} tzdata")
-        # Listar zonas horarias disponibles
-        print("\nZonas horarias disponibles:")
-        zones = run_command("timedatectl list-timezones").strip().split("\n")
-        for i, zone in enumerate(zones[:10]):
-            print(f"{i+1}. {zone}")
-        print("...")
         
-        timezone = input("Ingrese su zona horaria (ej. America/New_York): ")
+        # Mostrar opciones comunes de zonas horarias
+        print("\nSeleccione su zona horaria:")
+        common_zones = [
+            "Africa/Cairo", "Africa/Johannesburg", "Africa/Lagos",
+            "America/Argentina/Buenos_Aires", "America/Bogota", "America/Caracas",
+            "America/Chicago", "America/Denver", "America/Lima", "America/Los_Angeles",
+            "America/Mexico_City", "America/New_York", "America/Phoenix", "America/Santiago",
+            "America/Santo_Domingo", "America/Sao_Paulo", "America/Toronto",
+            "Asia/Bangkok", "Asia/Dubai", "Asia/Hong_Kong", "Asia/Istanbul", "Asia/Jakarta",
+            "Asia/Jerusalem", "Asia/Kolkata", "Asia/Manila", "Asia/Seoul", "Asia/Shanghai",
+            "Asia/Singapore", "Asia/Tokyo", "Australia/Melbourne", "Australia/Perth", "Australia/Sydney",
+            "Europe/Amsterdam", "Europe/Athens", "Europe/Berlin", "Europe/Dublin", "Europe/London",
+            "Europe/Madrid", "Europe/Moscow", "Europe/Paris", "Europe/Rome", "Europe/Warsaw",
+            "Pacific/Auckland", "Pacific/Fiji", "Pacific/Honolulu", "US/Central", "US/Eastern",
+            "US/Pacific", "UTC"
+        ]
+        
+        # Mostrar zonas horarias comunes en columnas
+        col_width = 30
+        num_cols = 3
+        
+        for i in range(0, len(common_zones), num_cols):
+            row = ""
+            for j in range(num_cols):
+                if i + j < len(common_zones):
+                    idx = i + j
+                    row += f"{idx+1:2d}. {common_zones[idx]:{col_width}}"
+            print(row)
+        
+        print("\n0. Otra zona horaria (listar todas)")
+        
+        # Solicitar selección
+        while True:
+            try:
+                choice = int(input("\nSeleccione una opción (número): "))
+                if choice == 0:
+                    # Mostrar todas las zonas horarias
+                    print("\nListando todas las zonas horarias disponibles (presione 'q' para salir)...")
+                    run_command("timedatectl list-timezones | less")
+                    timezone = input("Ingrese su zona horaria exactamente como aparece en la lista: ")
+                    break
+                elif 1 <= choice <= len(common_zones):
+                    timezone = common_zones[choice-1]
+                    break
+                else:
+                    print("Selección inválida. Intente de nuevo.")
+            except ValueError:
+                print("Por favor ingrese un número válido.")
+        
+        print(f"Zona horaria seleccionada: {timezone}")
+
     
     # Configurar zona horaria
     run_command(f"timedatectl set-timezone {timezone}")

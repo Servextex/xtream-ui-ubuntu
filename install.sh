@@ -623,9 +623,9 @@ rm -rf /tmp/update
 xcversion=Servextexv1
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$xcversion' WHERE admin_settings.type = 'panel_version'; "
 chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
-wget -O /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb https://bitbucket.org/emre1393/xtreamui_mirror/downloads/GeoLite2.mmdb
+wget -O /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb https://github.com/Servextex/xtream-ui-ubuntu/releases/download/start/GeoLite2.mmdb
 chattr +i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb
-geoliteversion=$(wget -qO- https://bitbucket.org/emre1393/xtreamui_mirror/downloads/Geolite2_status.json | jq -r ".version")
+geoliteversion=$(wget -qO- https://raw.githubusercontent.com/Servextex/xtream-ui-ubuntu/refs/heads/main/Geolite2_status.json | jq -r ".version")
 mysql -u root -p$PASSMYSQL xtream_iptvpro -e "UPDATE admin_settings SET value = '$geoliteversion' WHERE admin_settings.type = 'geolite2_version'; "
 chown xtreamcodes:xtreamcodes -R /home/xtreamcodes
 chmod +x /home/xtreamcodes/iptv_xtream_codes/start_services.sh
@@ -650,12 +650,12 @@ sleep 60
 $PACKAGE_INSTALLER libaio-devel libmaxminddb-devel
 $PACKAGE_INSTALLER libaio-dev libmaxminddb-dev
 cd /tmp/
-sudo wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz
-tar -xzvf OpenSSL_1_1_1h.tar.gz
+sudo wget https://github.com/Servextex/xtream-ui-ubuntu/releases/download/start/openssl-OpenSSL_1_1_1h.tar.gz
+tar -xzvf openssl-OpenSSL_1_1_1h.tar.gz
 cd /root
-wget http://nginx.org/download/nginx-1.19.5.tar.gz
+wget https://github.com/Servextex/xtream-ui-ubuntu/releases/download/start/nginx-1.19.5.tar.gz
 tar -xzvf nginx-1.19.5.tar.gz
-git clone https://github.com/leev/ngx_http_geoip2_module.git
+git clone https://github.com/Servextex/ngx_http_geoip2_module.git
 cd nginx-1.19.5
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx/ --http-client-body-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/client_temp --http-proxy-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/proxy_temp --http-fastcgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/fastcgi_temp --lock-path=/home/xtreamcodes/iptv_xtream_codes/tmp/nginx.lock --http-uwsgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/uwsgi_temp --http-scgi-temp-path=/home/xtreamcodes/iptv_xtream_codes/tmp/scgi_temp --conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf --error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/error.log --http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/access.log --pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx/nginx.pid --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_v2_module --with-pcre --with-http_random_index_module --with-http_secure_link_module --with-http_stub_status_module --with-http_auth_request_module --with-threads --with-mail --with-mail_ssl_module --with-file-aio --with-cpu-opt=generic --add-module=/root/ngx_http_geoip2_module --with-openssl=/tmp/openssl-OpenSSL_1_1_1h
 make
@@ -664,13 +664,13 @@ cp objs/nginx /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/
 chmod +x /home/xtreamcodes/iptv_xtream_codes/nginx/sbin/nginx
 cd /tmp/
 rm -rf openssl-OpenSSL_1_1_1h
-tar -xzvf OpenSSL_1_1_1h.tar.gz
+tar -xzvf openssl-OpenSSL_1_1_1h.tar.gz
 cd /root
 rm -rf nginx-1.19.5 ngx_http_geoip2_module
 tar -xzvf nginx-1.19.5.tar.gz
-git clone https://github.com/leev/ngx_http_geoip2_module.git
-wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.1.zip
-unzip v1.2.1.zip
+git clone https://github.com/Servextex/ngx_http_geoip2_module.git
+wget https://github.com/Servextex/xtream-ui-ubuntu/releases/download/start/nginx-rtmp-module-1.2.1.zip
+unzip nginx-rtmp-module-1.2.1.zip
 cd nginx-1.19.5
 ./configure --prefix=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/ --lock-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx_rtmp.lock --conf-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/conf/nginx.conf --error-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_error.log --http-log-path=/home/xtreamcodes/iptv_xtream_codes/logs/rtmp_access.log --pid-path=/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/nginx.pid --add-module=/root/nginx-rtmp-module-1.2.1 --with-pcre --without-http_rewrite_module --with-file-aio --with-cpu-opt=generic --with-openssl=/tmp/openssl-OpenSSL_1_1_1h --add-module=/root/ngx_http_geoip2_module --with-http_ssl_module --with-cc-opt="-Wimplicit-fallthrough=0"
 make
@@ -680,7 +680,7 @@ rm -f /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp
 cp nginx_rtmp /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/
 chmod +x /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp
 cd /root
-rm -rf /tmp/OpenSSL_1_1_1h /tmp/openssl-OpenSSL_1_1_1h nginx-1.19.5 v1.2.1.zip nginx-rtmp-module-1.2.1 ngx_http_geoip2_module nginx-1.19.5.tar.gz
+rm -rf /tmp/OpenSSL_1_1_1h /tmp/openssl-OpenSSL_1_1_1h nginx-1.19.5 nginx-rtmp-module-1.2.1.zip nginx-rtmp-module-1.2.1 ngx_http_geoip2_module nginx-1.19.5.tar.gz
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 ##################
 echo -e "\\r${CHECK_MARK} Configuration Auto Start Done"
